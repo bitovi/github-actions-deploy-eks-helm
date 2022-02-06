@@ -1,0 +1,67 @@
+# action.yml
+name: 'EKS Helm Deployment'
+description: 'Deploy a helm chart to EKS cluster.'
+branding:
+    icon: anchor
+    color: red
+inputs:
+    aws-secret-access-key:
+        description: 'AWS credentials used to login to eks.'
+        required: true
+    aws-access-key-id:
+        description: 'AWS credentials used to login to eks.'
+        required: true
+    aws-region:
+        description: 'AWS region to use (default: us-west-2)'
+        required: true
+        default: us-west-2
+    cluster-name:
+        description: 'EKS cluster name.'
+        required: true
+    cluster-role-arn:
+        description: 'EKS cluster admin role arn.'
+        required: false
+    config-files:
+        description: 'Comma separates list of helm values files.'
+        required: false
+    namespace:
+        description: 'Kubernetes namespace to use.'
+        required: false
+    values:
+        description: 'Comma separated list of value sets for helms. e.x: key1=value1,key2=value2'
+        required: false
+    name:
+        description: 'Name of the helm deploy.'
+        required: true
+    chart-path:
+        description: 'The path of the chart.'
+        required: false
+        default: 'helm/'
+    chart-repository:
+        description: 'The repository of the chart.'
+        required: false
+    timeout:
+        description: 'Timeout for the job.'
+        required: true
+        default: 0
+    update-deps:
+        description: 'Update chart dependencies'
+        required: false
+        default: "true"
+runs:
+    using: 'docker'
+    image: 'Dockerfile'
+    env:
+        AWS_REGION: ${{ inputs.aws-region }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
+        CLUSTER_NAME: ${{ inputs.cluster-name }}
+        CLUSTER_ROLE_ARN: ${{ inputs.cluster-role-arn }}
+        DEPLOY_CONFIG_FILES: ${{ inputs.config-files }}
+        DEPLOY_NAMESPACE: ${{ inputs.namespace }}
+        DEPLOY_VALUES: ${{ inputs.values }}
+        DEPLOY_NAME: ${{ inputs.name }}
+        DEPLOY_CHART_PATH: ${{ inputs.chart-path }}
+        TIMEOUT: ${{ inputs.timeout }}
+        UPDATE_DEPS: ${{ inputs.update-deps }}
+        HELM_REPOSITORY: ${{ inputs.chart-repository }}
