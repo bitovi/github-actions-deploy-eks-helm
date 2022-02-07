@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Login to Kubernetes Cluster.
+echo "Logging into kubernetes cluster $CLUSTER_NAME"
 if [ -n "$CLUSTER_ROLE_ARN" ]; then
     aws eks \
         --region ${AWS_REGION} \
@@ -22,7 +22,7 @@ else
 fi
 
 
-# Helm Deployment
+echo "Checking for existing deployment"
 if [ -n "$HELM_REPOSITORY" ]; then
    HELM_CHART_NAME=${DEPLOY_CHART_PATH%/*}
    DEPS_UPDATE_COMMAND="helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY}"
