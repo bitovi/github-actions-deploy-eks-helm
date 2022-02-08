@@ -14,11 +14,11 @@ fi
 
 
 # Check if namespace exists and create it if it doesn't.
-if [ -n "$(kubectl get namespaces | grep $NAMESPACE)" ]; then
-    echo "The namespace $NAMESPACE exists. Skipping creation..."
+if [ -n "$(kubectl get namespaces | grep ${DEPLOY_NAMESPACE})" ]; then
+    echo "The namespace ${DEPLOY_NAMESPACE}exists. Skipping creation..."
 else
-    echo "The namespace $NAMESPACE does not exists. Creating..."
-    kubectl create namespace $NAMESPACE
+    echo "The namespace ${DEPLOY_NAMESPACE} does not exists. Creating..."
+    kubectl create namespace ${DEPLOY_NAMESPACE}
 fi
 
 
