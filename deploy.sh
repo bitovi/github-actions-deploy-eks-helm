@@ -14,28 +14,27 @@ fi
 
 
 # Check if namespace exists and create it if it doesn't.
-if [ -n "$(kubectl get namespaces | grep ${DEPLOY_NAMESPACE})" ]; then
-    echo "The namespace ${DEPLOY_NAMESPACE}exists. Skipping creation..."
+if [ -n "$(kubectl get namespaces | grep $DEPLOY_NAMESPACE)" ]; then
+    echo "The namespace $DEPLOY_NAMESPACE exists. Skipping creation..."
 else
-    echo "The namespace ${DEPLOY_NAMESPACE} does not exists. Creating..."
-    kubectl create namespace ${DEPLOY_NAMESPACE}
+    echo "The namespace $DEPLOY_NAMESPACE does not exists. Creating..."
+    kubectl create namespace $DEPLOY_NAMESPACE
 fi
 
 
 echo "Checking for existing deployment"
-if [ -n "$HELM_REPOSITORY" ]; then
-   HELM_CHART_NAME=${DEPLOY_CHART_PATH%/*}
-   DEPS_UPDATE_COMMAND="helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY}"
-else
-   DEPS_UPDATE_COMMAND="helm dependency update ${DEPLOY_CHART_PATH}"
-fi
 
 # Check for existing install.  If not, perform install instead of upgrade
 INSTALLED=$(helm list --all -n ${DEPLOY_NAMESPACE} | grep ${DEPLOY_NAME} )
 
 if [ -z $INSTALLED ]; then
+    echo "New Install"
+    HELM_CHART_NAME=${DEPLOY_CHART_PATH%/*}
+    DEPS_UPDATE_COMMAND="helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY}"
     HELM_COMMAND="helm install --timeout ${TIMEOUT}"
 else
+    echo "Upgrade"
+    DEPS_UPDATE_COMMAND="helm dependency update ${DEPLOY_CHART_PATH}"
     HELM_COMMAND="helm upgrade --timeout ${TIMEOUT}"
 fi
   
