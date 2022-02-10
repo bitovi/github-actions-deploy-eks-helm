@@ -27,7 +27,7 @@ echo "Checking for existing deployment"
 # Check for existing install.  If not, perform install instead of upgrade
 INSTALLED=$(helm list --all -n ${DEPLOY_NAMESPACE} | grep ${DEPLOY_NAME} )
 
-if [ -z $INSTALLED ]; then
+if [ -z "$INSTALLED" ]; then
     echo "New Install"
     HELM_CHART_NAME=${DEPLOY_CHART_PATH%/*}
     DEPS_UPDATE_COMMAND="helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY}"
