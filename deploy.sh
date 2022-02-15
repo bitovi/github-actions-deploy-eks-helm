@@ -22,22 +22,23 @@ else
 fi
 
 
-echo "Checking for existing deployment"
-
-# Check for existing install.  If not, perform install instead of upgrade
-INSTALLED=$(helm list --all -n ${DEPLOY_NAMESPACE} | grep ${DEPLOY_NAME} )
-
-if [ -z "$INSTALLED" ]; then
-    echo "New Install"
+# Checking to see if a repo URL is in the path, if so add it or update.
+if [ -z "${HELM_REPOSITORY}" ]; then
     HELM_CHART_NAME=${DEPLOY_CHART_PATH%/*}
-    DEPS_UPDATE_COMMAND="helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY}"
-    HELM_COMMAND="helm install --timeout ${TIMEOUT}"
-else
-    echo "Upgrade"
-    DEPS_UPDATE_COMMAND="helm dependency update ${DEPLOY_CHART_PATH}"
-    HELM_COMMAND="helm upgrade --timeout ${TIMEOUT}"
+    CHART_REPO_EXISTS = $(helm repo list | grep ^${HELM_CHART_NAME})
+
+    if [ -z "${CHART_REPO_EXISTS}" ]; then
+        echo "Adding chart"
+        helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY}
+    else
+        echo "Updating chart"
+        helm repo update ${HELM_CHART_NAME}
+    fi
 fi
-  
+
+# Upgrade or install the chart.  This does it all.
+HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT}"
+
 # Set paramaters
 for config_file in ${DEPLOY_CONFIG_FILES//,/ }
 do
@@ -52,7 +53,5 @@ fi
 
 # Execute Commands
 HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME} ${DEPLOY_CHART_PATH}"
-echo "Executing: ${DEPS_UPDATE_COMMAND}"
-${DEPS_UPDATE_COMMAND}
 echo "Executing: ${HELM_COMMAND}"
 ${HELM_COMMAND}
