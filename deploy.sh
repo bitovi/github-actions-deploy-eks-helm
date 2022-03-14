@@ -1,4 +1,20 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# catch exit 1 (which is a special case in grep meaning 'no matches') so that we can use pipefail
+_grep() { grep "$@" || test $? = 1; }
+
+# First Install any required helm plugins
+if [ -n "${PLUGINS_LIST}" ]; then
+    plugins=${PLUGINS_LIST//,/ }
+    for plugin in $plugins
+    do
+        echo "installing helm plugin: [$plugin]"
+        helm plugin install $plugin
+    done
+fi
+
+helm plugin list
 
 echo "Logging into kubernetes cluster $CLUSTER_NAME"
 if [ -n "$CLUSTER_ROLE_ARN" ]; then
@@ -9,30 +25,31 @@ if [ -n "$CLUSTER_ROLE_ARN" ]; then
 else
     aws eks \
         --region ${AWS_REGION} \
-        update-kubeconfig --name ${CLUSTER_NAME} 
+        update-kubeconfig --name ${CLUSTER_NAME}
 fi
 
-
 # Check if namespace exists and create it if it doesn't.
-if [ -n "$(kubectl get namespaces | grep $DEPLOY_NAMESPACE)" ]; then
-    echo "The namespace $DEPLOY_NAMESPACE exists. Skipping creation..."
+KUBE_NAMESPACE_EXISTS=$(kubectl get namespaces | _grep ^${DEPLOY_NAMESPACE})
+if [ -z "${KUBE_NAMESPACE_EXISTS}" ]; then
+    echo "The namespace ${DEPLOY_NAMESPACE} does not exists. Creating..."
+    kubectl create namespace "${DEPLOY_NAMESPACE}"
 else
-    echo "The namespace $DEPLOY_NAMESPACE does not exists. Creating..."
-    kubectl create namespace $DEPLOY_NAMESPACE
+    echo "The namespace ${DEPLOY_NAMESPACE} exists. Skipping creation..."
 fi
 
 
 # Checking to see if a repo URL is in the path, if so add it or update.
 if [ -n "${HELM_REPOSITORY}" ]; then
-    HELM_CHART_NAME=${DEPLOY_CHART_PATH%/*}
-    CHART_REPO_EXISTS = $(helm repo list | grep ^${HELM_CHART_NAME})
+    HELM_CHART_NAME="${DEPLOY_CHART_PATH%/*}"
 
+    HELM_REPOS=$(helm repo list || true)
+    CHART_REPO_EXISTS=$(echo $HELM_REPOS | _grep ^${HELM_CHART_NAME})
     if [ -z "${CHART_REPO_EXISTS}" ]; then
-        echo "Adding chart"
-        helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY}
+        echo "Adding repo ${HELM_CHART_NAME} (${HELM_REPOSITORY})"
+        helm repo add "${HELM_CHART_NAME}" "${HELM_REPOSITORY}"
     else
-        echo "Updating chart"
-        helm repo update ${HELM_CHART_NAME}
+        echo "Updating repo ${HELM_CHART_NAME}"
+        helm repo update "${HELM_CHART_NAME}"
     fi
 fi
 
