@@ -22,7 +22,7 @@ inputs:
         description: 'EKS cluster admin role arn.'
         required: false
     config-files:
-        description: 'Comma separates list of helm values files.'
+        description: 'Comma separated list of helm values files.'
         required: false
     namespace:
         description: 'Kubernetes namespace to use.'
