@@ -17,9 +17,10 @@ Following inputs can be used as `step.with` keys
 | `cluster-role-arn`      | String  | If you wish to assume an admin role, provide the role arn here to login as. |
 | `config-files`      | String  | Comma separated list of helm values files. |
 | `namespace`      | String  | Kubernetes namespace to use.  Will create if it does not exist |
-| `values`      | String  | Comma separates list of value set for helms. e.x: key1=value1,key2=value2 |
+| `values`      | String  | Comma separated list of value set for helms. e.x: key1=value1,key2=value2 |
 | `name`      | String  | The name of the helm release |
 | `chart-path`      | String  | The path to the chart. (defaults to `helm/`) |
+| `plugins`      | String  | Comma separated list of plugins to install. e.x: https://github.com/hypnoglow/helm-s3.git,https://github.com/someuser/helm-plugin.git (defaults to none) |
 
 
 ## Example usage

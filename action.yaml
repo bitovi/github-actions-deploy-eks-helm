@@ -22,7 +22,7 @@ inputs:
         description: 'EKS cluster admin role arn.'
         required: false
     config-files:
-        description: 'Comma separates list of helm values files.'
+        description: 'Comma separated list of helm values files.'
         required: false
     namespace:
         description: 'Kubernetes namespace to use.'
@@ -43,11 +43,14 @@ inputs:
     timeout:
         description: 'Timeout for the job.'
         required: true
-        default: 0
+        default: "0s"
     update-deps:
         description: 'Update chart dependencies'
         required: false
         default: "true"
+    plugins:
+        description: 'Comma separated list of helm plugins to install. e.x: https://github.com/hypnoglow/helm-s3.git,https://github.com/someuser/helm-plugin.git'
+        required: false
 runs:
     using: 'docker'
     image: 'Dockerfile'
@@ -65,3 +68,4 @@ runs:
         TIMEOUT: ${{ inputs.timeout }}
         UPDATE_DEPS: ${{ inputs.update-deps }}
         HELM_REPOSITORY: ${{ inputs.chart-repository }}
+        PLUGINS_LIST: ${{ inputs.plugins }}

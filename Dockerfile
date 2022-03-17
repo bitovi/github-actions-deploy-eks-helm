@@ -1,7 +1,7 @@
 FROM python:3.8-slim-buster
 
 # Install the toolset.
-RUN apt -y update && apt -y install curl \
+RUN apt -y update && apt -y install curl git \
     && pip install awscli \
     && curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash \
     && curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl \
