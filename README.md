@@ -20,13 +20,14 @@ Following inputs can be used as `step.with` keys
 | `values`      | String  | Comma separated list of value set for helms. e.x: key1=value1,key2=value2 |
 | `name`      | String  | The name of the helm release |
 | `chart-path`      | String  | The path to the chart. (defaults to `helm/`) |
+| `chart-repository` | String | The URL of the chart-repository (Optional)
 | `plugins`      | String  | Comma separated list of plugins to install. e.x: https://github.com/hypnoglow/helm-s3.git,https://github.com/someuser/helm-plugin.git (defaults to none) |
 
 
 ## Example usage
 
 ```yaml
-uses: ccapell/action-deploy-eks-helm@v1.0.3
+uses: bitovi/github-actions-deploy-eks-helm@v1.0.0
 with:
   aws-access-key-id: ${{ secrets.AWS_ACCESS__KEY_ID }}
   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -38,3 +39,12 @@ with:
   values: key1=value1,key2=value2
   name: release_name
 ```
+
+## Contributing
+We would love for you to contribute to [`@bitovi/github-actions-deploy-eks-helm`](https://github.com/bitovi/github-actions-deploy-eks-helm).  [Issues](https://github.com/bitovi/github-actions-deploy-eks-helm/issues) and [Pull Requests](https://github.com/bitovi/github-actions-deploy-eks-helm/pulls) are welcome!
+
+## License
+The scripts and documentation in this project are released under the [MIT License](https://github.com/bitovi/github-actions-deploy-eks-helm/blob/main/LICENSE).
+
+## Provided by Bitovi
+[Bitovi](https://www.bitovi.com/) is a proud supporter of Open Source software.
