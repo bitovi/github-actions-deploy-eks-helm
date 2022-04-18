@@ -16,5 +16,7 @@ jobs:
     steps:
     - uses:  bitovi/github-actions-docker-publish@DEVOPS-110
       with:
+        docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
+        docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
         repo_name: deploy-eks-helm
         use_latest: 'false'
