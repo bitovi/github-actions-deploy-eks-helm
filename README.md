@@ -2,6 +2,8 @@
 
 GitHub action for deploying to AWS EKS clusters using helm.
 
+Note:  If your EKS cluster administrative access is in a private network, you will need to use a self hosted runner in that network to use this action.
+
 ## Customizing
 
 ### inputs
