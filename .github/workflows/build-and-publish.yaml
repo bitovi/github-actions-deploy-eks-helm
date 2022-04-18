@@ -3,20 +3,18 @@ name: Build and Publish Docker image
 on:
   workflow_dispatch: {}
   push:
-    branches: [ main ]
+    branches: [ main, DevOps-110 ]
   #release:
    # types: [published]
+  pull_request: 
+    branches:
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build and Publish Docker
-      env:
-        REGISTRY_URL: "bitovi/deploy-eks-helm"
-        DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKER_PASS: ${{ secrets.DOCKERHUB_PASSWORD }}
-      run: |
-        echo "running scripts/ci/publish.sh"
-        ./scripts/ci/publish.sh
+    - uses:  bitovi/github-actions-docker-publish@DEVOPS-110
+      with:
+        repo_name: deploy-eks-helm
+        use_latest: 'false'
