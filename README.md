@@ -40,6 +40,24 @@ with:
   name: release_name
 ```
 
+## Example 2
+```yaml
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.0.0
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS__KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        cluster-name: mycluster
+        cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
+        config-files: fluent-bit/prod/values.yaml
+        chart-path: fluent/fluent-bit
+        namespace: logging
+        name: fluent-bit
+        chart-repository: https://fluent.github.io/helm-charts
+```
+
+
 ## Contributing
 We would love for you to contribute to [`@bitovi/github-actions-deploy-eks-helm`](https://github.com/bitovi/github-actions-deploy-eks-helm).  [Issues](https://github.com/bitovi/github-actions-deploy-eks-helm/issues) and [Pull Requests](https://github.com/bitovi/github-actions-deploy-eks-helm/pulls) are welcome!
 
