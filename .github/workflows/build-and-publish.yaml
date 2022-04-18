@@ -3,9 +3,9 @@ name: Build and Publish Docker image
 on:
   workflow_dispatch: {}
   push:
-    branches: [ main, DevOps-110 ]
-  #release:
-   # types: [published]
+    branches: [ main ]
+  release:
+    types: [published]
   pull_request: 
     branches:
       - main
@@ -14,9 +14,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses:  bitovi/github-actions-docker-publish@DEVOPS-110
+    - uses:  bitovi/github-actions-docker-publish
       with:
         docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
         docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
         repo_name: deploy-eks-helm
-        use_latest: 'false'
+
