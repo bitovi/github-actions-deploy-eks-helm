@@ -53,7 +53,7 @@ inputs:
         required: false
 runs:
     using: 'docker'
-    image: 'Dockerfile'
+    image: 'bitovi/deploy-eks-helm:v1.0.0'
     env:
         AWS_REGION: ${{ inputs.aws-region }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
