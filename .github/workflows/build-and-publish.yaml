@@ -23,4 +23,3 @@ jobs:
     - run: |
         echo "Image Created:  ${{ steps.docker-publish.outputs.image }}"
         echo "Tag Created: ${{ steps.docker-publish.outputs.tag }}"
-      shell: bash
