@@ -23,7 +23,7 @@ Following inputs can be used as `step.with` keys
 | `name`      | String  | The name of the helm release |
 | `chart-path`      | String  | The path to the chart. (defaults to `helm/`) |
 | `chart-repository` | String | The URL of the chart-repository (Optional)
-| `plugins`      | String  | Comma separated list of plugins to install. e.x: https://github.com/hypnoglow/helm-s3.git,https://github.com/someuser/helm-plugin.git (defaults to none) |
+| `plugins`      | String  | Comma separated list of plugins to install. e.x: https://github.com/hypnoglow/helm-s3.git, https://github.com/someuser/helm-plugin.git (defaults to none) |
 
 
 ## Example usage
