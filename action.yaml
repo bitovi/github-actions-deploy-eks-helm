@@ -1,6 +1,6 @@
 # action.yml
 name: 'Deploy Helm to EKS'
-description: 'Deploy a helm chart to an EKS cluster using IAM authenication.'
+description: 'Deploy a helm chart to an EKS cluster using IAM authentication.'
 branding:
     icon: anchor
     color: red
