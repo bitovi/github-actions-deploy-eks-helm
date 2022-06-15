@@ -56,6 +56,11 @@ fi
 # Upgrade or install the chart.  This does it all.
 HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT}"
 
+# If we should wait, then do so 
+if [ -n "${HELM_WAIT}" ]; then
+    HELM_COMMAND="${HELM_COMMAND} --wait"
+fi
+
 # Set paramaters
 for config_file in ${DEPLOY_CONFIG_FILES//,/ }
 do
