@@ -51,9 +51,12 @@ inputs:
     plugins:
         description: 'Comma separated list of helm plugins to install. e.x: https://github.com/hypnoglow/helm-s3.git,https://github.com/someuser/helm-plugin.git'
         required: false
+    helm-wait:
+        description: 'Add the --wait flag to helm'
+        required: false
 runs:
     using: 'docker'
-    image: 'bitovi/deploy-eks-helm:v1.0.0'
+    image: 'docker://bitovi/deploy-eks-helm:v1.0.1'
     env:
         AWS_REGION: ${{ inputs.aws-region }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
@@ -68,4 +71,5 @@ runs:
         TIMEOUT: ${{ inputs.timeout }}
         UPDATE_DEPS: ${{ inputs.update-deps }}
         HELM_REPOSITORY: ${{ inputs.chart-repository }}
+        HELM_WAIT: ${{ inputs.helm-wait }}
         PLUGINS_LIST: ${{ inputs.plugins }}
