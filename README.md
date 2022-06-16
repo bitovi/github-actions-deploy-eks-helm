@@ -31,7 +31,7 @@ Following inputs can be used as `step.with` keys
 ## Example usage
 
 ```yaml
-uses: bitovi/github-actions-deploy-eks-helm@v1.0.1
+uses: bitovi/github-actions-deploy-eks-helm@v1.0.2
 with:
   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -47,7 +47,7 @@ with:
 ## Example 2
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.0.1
+      uses: bitovi/github-actions-deploy-eks-helm@v1.0.2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
