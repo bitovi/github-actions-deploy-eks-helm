@@ -54,9 +54,12 @@ inputs:
     helm-wait:
         description: 'Add the --wait flag to helm'
         required: false
+    atomic:
+        description: 'Add the --atomic flag to rollback on failure'
+        required: false
 runs:
     using: 'docker'
-    image: 'docker://bitovi/deploy-eks-helm:v1.0.2'
+    image: 'docker://bitovi/deploy-eks-helm:v1.0.3'
     env:
         AWS_REGION: ${{ inputs.aws-region }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
@@ -73,3 +76,4 @@ runs:
         HELM_REPOSITORY: ${{ inputs.chart-repository }}
         HELM_WAIT: ${{ inputs.helm-wait }}
         PLUGINS_LIST: ${{ inputs.plugins }}
+        HELM_ATOMIC: ${{ inputs.atomic }}
