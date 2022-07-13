@@ -61,6 +61,11 @@ if [ -n "${HELM_WAIT}" ]; then
     HELM_COMMAND="${HELM_COMMAND} --wait"
 fi
 
+# Add atomic flag
+if [ -n "${HELM_ATOMIC}" ]; then
+    HELM_COMMAND="${HELM_COMMAND} --atomic"
+fi
+
 # Set paramaters
 for config_file in ${DEPLOY_CONFIG_FILES//,/ }
 do
