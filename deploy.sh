@@ -53,8 +53,17 @@ if [ -n "${HELM_REPOSITORY}" ]; then
     fi
 fi
 
-# Upgrade or install the chart.  This does it all.
-HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT}"
+if [ "${HELM_ACTION}" == "install" ]; then
+    # Upgrade or install the chart.  This does it all.
+    HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT}"
+
+elif [ "${HELM_ACTION}" == "uninstall" ]; then
+    HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
+
+else
+    echo "ERROR: HELM_ACTION specified doesn't exist in this context. Please use 'install' or 'uninstall'"
+    exit 2
+fi
 
 # If we should wait, then do so 
 if [ -n "${HELM_WAIT}" ]; then

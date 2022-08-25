@@ -33,6 +33,10 @@ inputs:
     name:
         description: 'Name of the helm deploy.'
         required: true
+    action:
+        description: 'Specify whether you want to install or uninstall the target helm chart'
+        required: false
+        default: 'install'
     chart-path:
         description: 'The path of the chart.'
         required: false
@@ -57,6 +61,7 @@ inputs:
     atomic:
         description: 'Add the --atomic flag to rollback on failure'
         required: false
+
 runs:
     using: 'docker'
     image: 'docker://bitovi/deploy-eks-helm:v1.0.3'
@@ -77,3 +82,4 @@ runs:
         HELM_WAIT: ${{ inputs.helm-wait }}
         PLUGINS_LIST: ${{ inputs.plugins }}
         HELM_ATOMIC: ${{ inputs.atomic }}
+        HELM_ACTION: ${{ inputs.action }}
