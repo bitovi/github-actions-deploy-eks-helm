@@ -53,32 +53,47 @@ if [ -n "${HELM_REPOSITORY}" ]; then
     fi
 fi
 
-# Upgrade or install the chart.  This does it all.
-HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT}"
+if [ "${HELM_ACTION}" == "install" ]; then
+    # Upgrade or install the chart.  This does it all.
+    HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT}"
 
-# If we should wait, then do so 
-if [ -n "${HELM_WAIT}" ]; then
-    HELM_COMMAND="${HELM_COMMAND} --wait"
+    # If we should wait, then do so 
+    if [ -n "${HELM_WAIT}" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --wait"
+    fi
+
+    # Add atomic flag
+    if [ -n "${HELM_ATOMIC}" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --atomic"
+    fi
+
+    for config_file in ${DEPLOY_CONFIG_FILES//,/ }
+    do
+        HELM_COMMAND="${HELM_COMMAND} -f ${config_file}"
+    done
+
+    if [ -n "$DEPLOY_VALUES" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --set ${DEPLOY_VALUES}"
+    fi
+
+elif [ "${HELM_ACTION}" == "uninstall" ]; then
+    HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
+
+else
+    echo "ERROR: HELM_ACTION specified doesn't exist in this context. Please use 'install' or 'uninstall'"
+    exit 2
 fi
 
-# Add atomic flag
-if [ -n "${HELM_ATOMIC}" ]; then
-    HELM_COMMAND="${HELM_COMMAND} --atomic"
-fi
-
-# Set paramaters
-for config_file in ${DEPLOY_CONFIG_FILES//,/ }
-do
-    HELM_COMMAND="${HELM_COMMAND} -f ${config_file}"
-done
 if [ -n "$DEPLOY_NAMESPACE" ]; then
     HELM_COMMAND="${HELM_COMMAND} -n ${DEPLOY_NAMESPACE}"
 fi
-if [ -n "$DEPLOY_VALUES" ]; then
-    HELM_COMMAND="${HELM_COMMAND} --set ${DEPLOY_VALUES}"
-fi
 
 # Execute Commands
-HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME} ${DEPLOY_CHART_PATH}"
+HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME}"
+
+if [ "${HELM_ACTION}" == "install" ]; then
+    HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_CHART_PATH}"
+fi
+
 echo "Executing: ${HELM_COMMAND}"
 ${HELM_COMMAND}
