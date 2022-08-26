@@ -76,10 +76,13 @@ if [ -n "${HELM_ATOMIC}" ]; then
 fi
 
 # Set paramaters
-for config_file in ${DEPLOY_CONFIG_FILES//,/ }
-do
-    HELM_COMMAND="${HELM_COMMAND} -f ${config_file}"
-done
+if [ "${HELM_ACTION}" != "uninstall" ]; then
+    for config_file in ${DEPLOY_CONFIG_FILES//,/ }
+    do
+        HELM_COMMAND="${HELM_COMMAND} -f ${config_file}"
+    done
+fi
+
 if [ -n "$DEPLOY_NAMESPACE" ]; then
     HELM_COMMAND="${HELM_COMMAND} -n ${DEPLOY_NAMESPACE}"
 fi
