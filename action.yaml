@@ -64,7 +64,7 @@ inputs:
 
 runs:
     using: 'docker'
-    image: 'docker://bitovi/deploy-eks-helm:uninstall'
+    image: 'docker://bitovi/deploy-eks-helm:pr-uninstall'
     env:
         AWS_REGION: ${{ inputs.aws-region }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
