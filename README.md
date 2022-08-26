@@ -17,6 +17,7 @@ Following inputs can be used as `step.with` keys
 | `aws-region`            | String | AWS region to use. This must match the region your desired cluster lies in.                                                                               |
 | `cluster-name`          | String | The name of the desired cluster.                                                                                                                          |
 | `cluster-role-arn`      | String | If you wish to assume an admin role, provide the role arn here to login as.                                                                               |
+| `action`                | String | Determines if we `install` or `uninstall` the chart. (Optional, Defaults to `install`)
 | `config-files`          | String | Comma separated list of helm values files.                                                                                                                |
 | `namespace`             | String | Kubernetes namespace to use.  Will create if it does not exist                                                                                            |
 | `values`                | String | Comma separated list of value set for helms. e.x:`key1=value1,key2=value2`                                                                                |
@@ -32,7 +33,7 @@ Following inputs can be used as `step.with` keys
 ## Example usage
 
 ```yaml
-uses: bitovi/github-actions-deploy-eks-helm@v1.0.3
+uses: bitovi/github-actions-deploy-eks-helm@v1.0.4
 with:
   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -48,7 +49,7 @@ with:
 ## Example 2
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.0.3
+      uses: bitovi/github-actions-deploy-eks-helm@v1.0.4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -63,6 +64,19 @@ with:
         atomic: true
 ```
 
+## Example Uninstall
+
+```yaml
+uses: bitovi/github-actions-deploy-eks-helm@v1.0.4
+with:
+  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  aws-region: us-west-2
+  action: uninstall
+  cluster-name: mycluster
+  namespace: dev
+  name: release_name
+```
 
 ## Contributing
 We would love for you to contribute to [`bitovi/github-actions-deploy-eks-helm`](https://github.com/bitovi/github-actions-deploy-eks-helm).   [Issues](https://github.com/bitovi/github-actions-deploy-eks-helm/issues) and [Pull Requests](https://github.com/bitovi/github-actions-deploy-eks-helm/pulls) are welcome!
