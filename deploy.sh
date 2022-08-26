@@ -89,6 +89,11 @@ if [ -n "$DEPLOY_NAMESPACE" ]; then
 fi
 
 # Execute Commands
-HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME} ${DEPLOY_CHART_PATH}"
+HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME}"
+
+if [ "${HELM_ACTION}" == "install" ]; then
+    HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_CHART_PATH}"
+fi
+
 echo "Executing: ${HELM_COMMAND}"
 ${HELM_COMMAND}
