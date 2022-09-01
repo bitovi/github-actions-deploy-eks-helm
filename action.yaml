@@ -44,6 +44,9 @@ inputs:
     chart-repository:
         description: 'The repository of the chart.'
         required: false
+    version:
+        description: 'The chart version'
+        required: false
     timeout:
         description: 'Timeout for the job.'
         required: true
@@ -64,7 +67,7 @@ inputs:
 
 runs:
     using: 'docker'
-    image: 'docker://bitovi/deploy-eks-helm:v1.0.4'
+    image: 'docker://bitovi/deploy-eks-helm:v1.1.0'
     env:
         AWS_REGION: ${{ inputs.aws-region }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
@@ -83,3 +86,4 @@ runs:
         PLUGINS_LIST: ${{ inputs.plugins }}
         HELM_ATOMIC: ${{ inputs.atomic }}
         HELM_ACTION: ${{ inputs.action }}
+        VERSION: ${{ inputs.version }}

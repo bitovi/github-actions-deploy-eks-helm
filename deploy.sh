@@ -76,6 +76,10 @@ if [ "${HELM_ACTION}" == "install" ]; then
         HELM_COMMAND="${HELM_COMMAND} --set ${DEPLOY_VALUES}"
     fi
 
+    if [ -n "$VERSION" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --version ${VERSION}"
+    fi
+
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
 
