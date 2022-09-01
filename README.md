@@ -17,13 +17,14 @@ Following inputs can be used as `step.with` keys
 | `aws-region`            | String | AWS region to use. This must match the region your desired cluster lies in.                                                                               |
 | `cluster-name`          | String | The name of the desired cluster.                                                                                                                          |
 | `cluster-role-arn`      | String | If you wish to assume an admin role, provide the role arn here to login as.                                                                               |
-| `action`                | String | Determines if we `install` or `uninstall` the chart. (Optional, Defaults to `install`)
+| `action`                | String | Determines if we `install` or `uninstall` the chart. (Optional, Defaults to `install`)                                                                    |
 | `config-files`          | String | Comma separated list of helm values files.                                                                                                                |
 | `namespace`             | String | Kubernetes namespace to use.  Will create if it does not exist                                                                                            |
 | `values`                | String | Comma separated list of value set for helms. e.x:`key1=value1,key2=value2`                                                                                |
 | `name`                  | String | The name of the helm release                                                                                                                              |
 | `chart-path`            | String | The path to the chart. (defaults to `helm/`)                                                                                                              |
 | `chart-repository`      | String | The URL of the chart-repository (Optional)                                                                                                                |
+| `version`               | String | The version of the chart (Optional)                                                                                                                      |
 | `plugins`               | String | Comma separated list of plugins to install. e.x:` https://github.com/hypnoglow/helm-s3.git, https://github.com/someuser/helm-plugin.git` (defaults to none) |
 | `timeout`               | String | The value of the timeout for the helm release                                                                                                             |
 | `update-deps`           | String | Update chart dependencies                                                                                                                                 |
@@ -33,7 +34,7 @@ Following inputs can be used as `step.with` keys
 ## Example usage
 
 ```yaml
-uses: bitovi/github-actions-deploy-eks-helm@v1.0.4
+uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
 with:
   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -49,7 +50,7 @@ with:
 ## Example 2
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.0.4
+      uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -61,6 +62,7 @@ with:
         namespace: logging
         name: fluent-bit
         chart-repository: https://fluent.github.io/helm-charts
+        version: 0.20.6
         atomic: true
 ```
 
