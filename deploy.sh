@@ -95,11 +95,11 @@ if [ "${HELM_ACTION}" == "install" ]; then
     fi
     
     if [ -n "$SKIP_TLS" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --insecure-skip-tls-verify ${SKIP_TLS}"
+        HELM_COMMAND="${HELM_COMMAND} --insecure-skip-tls-verify"
     fi
     
     if [ -n "$PASS_CREDENTIALS" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --pass-credentials ${PASS_CREDENTIALS}"
+        HELM_COMMAND="${HELM_COMMAND} --pass-credentials"
     fi
     
     if [ -n "$REPO_USERNAME" ]; then
