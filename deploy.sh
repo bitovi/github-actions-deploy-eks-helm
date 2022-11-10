@@ -80,6 +80,36 @@ if [ "${HELM_ACTION}" == "install" ]; then
         HELM_COMMAND="${HELM_COMMAND} --version ${VERSION}"
     fi
 
+    # Repo management
+
+    if [ -n "$CA_FILE" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --ca-file ${CA_FILE}"
+    fi
+    
+    if [ -n "$CERT_FILE" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --cert-file ${CERT_FILE}"
+    fi
+    
+    if [ -n "$KEY_FILE" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --key-file ${KEY_FILE}"
+    fi
+    
+    if [ -n "$SKIP_TLS" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --insecure-skip-tls-verify ${SKIP_TLS}"
+    fi
+    
+    if [ -n "$PASS_CREDENTIALS" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --pass-credentials ${PASS_CREDENTIALS}"
+    fi
+    
+    if [ -n "$REPO_USERNAME" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --username ${REPO_USERNAME}"
+    fi
+    
+    if [ -n "$REPO_PASSWORD" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --password ${REPO_PASSWORD}"
+    fi
+    
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
 
