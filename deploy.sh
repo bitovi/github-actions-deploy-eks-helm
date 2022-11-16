@@ -28,6 +28,40 @@ else
         update-kubeconfig --name ${CLUSTER_NAME}
 fi
 
+# If defined, will set up authentication parameters
+if [ "${HELM_ACTION}" == "install" ]; then
+
+    # Authentication management
+
+    if [ -n "$CA_FILE" ]; then
+        HELM_AUTH="${HELM_AUTH} --ca-file ${CA_FILE}"
+    fi
+
+    if [ -n "$CERT_FILE" ]; then
+        HELM_AUTH="${HELM_AUTH} --cert-file ${CERT_FILE}"
+    fi
+
+    if [ -n "$KEY_FILE" ]; then
+        HELM_AUTH="${HELM_AUTH} --key-file ${KEY_FILE}"
+    fi
+
+    if [ -n "$SKIP_TLS" ]; then
+        HELM_AUTH="${HELM_AUTH} --insecure-skip-tls-verify"
+    fi
+
+    if [ -n "$PASS_CREDENTIALS" ]; then
+        HELM_AUTH="${HELM_AUTH} --pass-credentials"
+    fi
+
+    if [ -n "$REPO_USERNAME" ]; then
+        HELM_AUTH="${HELM_AUTH} --username ${REPO_USERNAME}"
+    fi
+
+    if [ -n "$REPO_PASSWORD" ]; then
+        HELM_AUTH="${HELM_AUTH} --password ${REPO_PASSWORD}"
+    fi
+fi
+
 # Check if namespace exists and create it if it doesn't.
 KUBE_NAMESPACE_EXISTS=$(kubectl get namespaces | _grep ^${DEPLOY_NAMESPACE})
 if [ -z "${KUBE_NAMESPACE_EXISTS}" ]; then
@@ -46,7 +80,7 @@ if [ -n "${HELM_REPOSITORY}" ]; then
     CHART_REPO_EXISTS=$(echo $HELM_REPOS | _grep ^${HELM_CHART_NAME})
     if [ -z "${CHART_REPO_EXISTS}" ]; then
         echo "Adding repo ${HELM_CHART_NAME} (${HELM_REPOSITORY})"
-        helm repo add "${HELM_CHART_NAME}" "${HELM_REPOSITORY}"
+        helm repo add "${HELM_CHART_NAME}" "${HELM_REPOSITORY} ${HELM_AUTH}"
     else
         echo "Updating repo ${HELM_CHART_NAME}"
         helm repo update "${HELM_CHART_NAME}"
@@ -55,7 +89,7 @@ fi
 
 if [ "${HELM_ACTION}" == "install" ]; then
     # Upgrade or install the chart.  This does it all.
-    HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT}"
+    HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT} ${HELM_AUTH}"
 
     # If we should wait, then do so 
     if [ -n "${HELM_WAIT}" ]; then
@@ -80,36 +114,6 @@ if [ "${HELM_ACTION}" == "install" ]; then
         HELM_COMMAND="${HELM_COMMAND} --version ${VERSION}"
     fi
 
-    # Repo management
-
-    if [ -n "$CA_FILE" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --ca-file ${CA_FILE}"
-    fi
-    
-    if [ -n "$CERT_FILE" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --cert-file ${CERT_FILE}"
-    fi
-    
-    if [ -n "$KEY_FILE" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --key-file ${KEY_FILE}"
-    fi
-    
-    if [ -n "$SKIP_TLS" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --insecure-skip-tls-verify"
-    fi
-    
-    if [ -n "$PASS_CREDENTIALS" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --pass-credentials"
-    fi
-    
-    if [ -n "$REPO_USERNAME" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --username ${REPO_USERNAME}"
-    fi
-    
-    if [ -n "$REPO_PASSWORD" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --password ${REPO_PASSWORD}"
-    fi
-    
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
 
