@@ -7,10 +7,10 @@ branding:
 inputs:
     aws-secret-access-key:
         description: 'AWS credentials used to login to eks.'
-        required: true
+        required: false
     aws-access-key-id:
         description: 'AWS credentials used to login to eks.'
-        required: true
+        required: false
     aws-region:
         description: 'AWS region to use (default: us-west-2)'
         required: true
