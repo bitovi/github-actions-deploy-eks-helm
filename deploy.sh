@@ -4,6 +4,8 @@ set -euo pipefail
 # catch exit 1 (which is a special case in grep meaning 'no matches') so that we can use pipefail
 _grep() { grep "$@" || test $? = 1; }
 
+HELM_AUTH=""
+
 # First Install any required helm plugins
 if [ -n "${PLUGINS_LIST}" ]; then
     plugins=${PLUGINS_LIST//,/ }
