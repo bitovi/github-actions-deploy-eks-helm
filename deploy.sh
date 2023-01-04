@@ -64,16 +64,6 @@ if [ "${HELM_ACTION}" == "install" ]; then
     fi
 fi
 
-# Check if namespace exists and create it if it doesn't.
-KUBE_NAMESPACE_EXISTS=$(kubectl get namespaces | _grep ^${DEPLOY_NAMESPACE})
-if [ -z "${KUBE_NAMESPACE_EXISTS}" ]; then
-    echo "The namespace ${DEPLOY_NAMESPACE} does not exists. Creating..."
-    kubectl create namespace "${DEPLOY_NAMESPACE}"
-else
-    echo "The namespace ${DEPLOY_NAMESPACE} exists. Skipping creation..."
-fi
-
-
 # Checking to see if a repo URL is in the path, if so add it or update.
 if [ -n "${HELM_REPOSITORY}" ]; then
     HELM_CHART_NAME="${DEPLOY_CHART_PATH%/*}"
@@ -91,7 +81,7 @@ fi
 
 if [ "${HELM_ACTION}" == "install" ]; then
     # Upgrade or install the chart.  This does it all.
-    HELM_COMMAND="helm upgrade --install --timeout ${TIMEOUT} ${HELM_AUTH}"
+    HELM_COMMAND="helm upgrade --install --create-namespace --timeout ${TIMEOUT}  ${HELM_AUTH}"
 
     # If we should wait, then do so 
     if [ -n "${HELM_WAIT}" ]; then
