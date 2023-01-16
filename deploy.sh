@@ -6,6 +6,9 @@ _grep() { grep "$@" || test $? = 1; }
 
 HELM_AUTH=""
 
+# Ensuring any boolean type of value goes lowercase
+OCI_REGISTRY="$(echo "$OCI_REGISTRY" | tr '[:upper:]' '[:lower:]')"
+
 # First Install any required helm plugins
 if [ -n "${PLUGINS_LIST}" ]; then
     plugins=${PLUGINS_LIST//,/ }
@@ -31,7 +34,7 @@ else
 fi
 
 # If defined, will set up authentication parameters
-if [ "${HELM_ACTION}" == "install" ]; then
+if [ "${HELM_ACTION}" == "install" ] && [ "${OCI_REGISTRY}" != "true" ]; then
 
     # Authentication management
 
@@ -64,8 +67,8 @@ if [ "${HELM_ACTION}" == "install" ]; then
     fi
 fi
 
-# Checking to see if a repo URL is in the path, if so add it or update.
-if [ -n "${HELM_REPOSITORY}" ]; then
+# Checking to see if a repo URL is in the path, if so add it or update. Validate it's not an OCI based registry.
+if [ -n "${HELM_REPOSITORY}" ] && [ "${OCI_REGISTRY}" != "true" ]; then
     HELM_CHART_NAME="${DEPLOY_CHART_PATH%/*}"
 
     HELM_REPOS=$(helm repo list || true)
@@ -78,6 +81,14 @@ if [ -n "${HELM_REPOSITORY}" ]; then
         helm repo update "${HELM_CHART_NAME}"
     fi
 fi
+
+# If OCI registry, we need to login before performing any action
+
+if [ "${OCI_REGISTRY}" == "true" ]; then
+   echo "${REPO_PASSWORD}" | helm registry login "${HELM_REPOSITORY}" --username "${REPO_USERNAME}" --password-stdin
+fi
+
+# Proceed with installation procedure
 
 if [ "${HELM_ACTION}" == "install" ]; then
     # Upgrade or install the chart.  This does it all.
