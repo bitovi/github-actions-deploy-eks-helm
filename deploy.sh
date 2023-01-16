@@ -84,8 +84,18 @@ fi
 
 # If OCI registry, we need to login before performing any action
 
-if [ "${OCI_REGISTRY}" == "true" ]; then
-   echo "${REPO_PASSWORD}" | helm registry login "${HELM_REPOSITORY}" --username "${REPO_USERNAME}" --password-stdin
+if [ "${OCI_REGISTRY}" == "true" ] ; then
+    if [ -z "${REPO_PASSWORD}" ] || [ -z "${REPO_USERNAME}" ] ; then
+        echo "Missing credentials to login to ECR registry"
+    else
+        echo "Logging into helm registry"
+        echo "${REPO_PASSWORD}" | helm registry login "${HELM_REPOSITORY}" --username "${REPO_USERNAME}" --password-stdin
+        if ! [ $? == 0 ]; then
+            echo "Something went wrong with logging into the ECR Registry. Please check credentials."
+            echo "Command excecuted was --> echo some-password | helm registry login "${HELM_REPOSITORY}" --username "${REPO_USERNAME}" --password-stdin "
+            exit 1
+        fi
+    fi
 fi
 
 # Proceed with installation procedure
