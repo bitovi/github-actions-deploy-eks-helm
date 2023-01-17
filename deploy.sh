@@ -5,9 +5,22 @@ set -euo pipefail
 _grep() { grep "$@" || test $? = 1; }
 
 HELM_AUTH=""
+OCI_REGISTRY=false
 
-# Ensuring any boolean type of value goes lowercase
-OCI_REGISTRY="$(echo "$OCI_REGISTRY" | tr '[:upper:]' '[:lower:]')"
+# Check repository type
+
+if [ -n "${HELM_REPOSITORY}" ]; then
+    if [[ ${HELM_REPOSITORY} =~ ^http.* ]]; then
+        OCI_REGISTRY=false
+    else
+        if [[ ${HELM_REPOSITORY} =~ ^oci.* ]]; then
+            OCI_REGISTRY=true
+        else
+            echo "::error::Protocol handler expected here. Need http or oci."
+            exit 1
+        fi
+    fi
+fi
 
 # First Install any required helm plugins
 if [ -n "${PLUGINS_LIST}" ]; then
@@ -71,14 +84,22 @@ fi
 if [ -n "${HELM_REPOSITORY}" ] && [ "${OCI_REGISTRY}" != "true" ]; then
     HELM_CHART_NAME="${DEPLOY_CHART_PATH%/*}"
 
-    HELM_REPOS=$(helm repo list || true)
-    CHART_REPO_EXISTS=$(echo $HELM_REPOS | _grep ^${HELM_CHART_NAME})
+    CHART_REPO_EXISTS=$(helm repo list | _grep ^${HELM_CHART_NAME})
     if [ -z "${CHART_REPO_EXISTS}" ]; then
         echo "Adding repo ${HELM_CHART_NAME} (${HELM_REPOSITORY})"
-        helm repo add "${HELM_CHART_NAME}" "${HELM_REPOSITORY} ${HELM_AUTH}"
+        helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY} ${HELM_AUTH}
+            if ! [ $? == 0 ]; then
+                echo "::error::Something went wrong adding the helm repository."
+                echo "Please check the logs. If you consider this a bug, please submit an issue in our repo."
+                exit 1
+            fi
     else
         echo "Updating repo ${HELM_CHART_NAME}"
         helm repo update "${HELM_CHART_NAME}"
+            if ! [ $? == 0 ]; then
+                echo "::error::Something went wrong updating the helm repository."
+                exit 1
+            fi
     fi
 fi
 
@@ -89,10 +110,9 @@ if [ "${OCI_REGISTRY}" == "true" ] ; then
         echo "Missing credentials to login to ECR registry"
     else
         echo "Logging into helm registry"
-        echo "${REPO_PASSWORD}" | helm registry login "${HELM_REPOSITORY}" --username "${REPO_USERNAME}" --password-stdin
+        echo "${REPO_PASSWORD}" | helm registry login ${HELM_REPOSITORY#oci://} --username ${REPO_USERNAME} --password-stdin
         if ! [ $? == 0 ]; then
-            echo "Something went wrong with logging into the ECR Registry. Please check credentials."
-            echo "Command excecuted was --> echo some-password | helm registry login "${HELM_REPOSITORY}" --username "${REPO_USERNAME}" --password-stdin "
+            echo "::error::Something went wrong with logging into the ECR Registry."
             exit 1
         fi
     fi
@@ -131,7 +151,7 @@ elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
 
 else
-    echo "ERROR: HELM_ACTION specified doesn't exist in this context. Please use 'install' or 'uninstall'"
+    echo "::error:: HELM_ACTION specified doesn't exist in this context. Please use 'install' or 'uninstall'"
     exit 2
 fi
 
@@ -143,6 +163,9 @@ fi
 HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME}"
 
 if [ "${HELM_ACTION}" == "install" ]; then
+    if [ "${OCI_REGISTRY}" == "true" ]; then
+        DEPLOY_CHART_PATH="${HELM_REPOSITORY}/${DEPLOY_CHART_PATH}/${DEPLOY_NAME}"
+    fi
     HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_CHART_PATH}"
 fi
 

@@ -44,9 +44,6 @@ inputs:
     chart-repository:
         description: 'The repository of the chart.'
         required: false
-    chart-repository-type:
-        description: 'Type of repository. If using OCI registries, set this to true in to login before running any command.'
-        required: false
     version:
         description: 'The chart version'
         required: false
@@ -106,7 +103,6 @@ runs:
         TIMEOUT: ${{ inputs.timeout }}
         UPDATE_DEPS: ${{ inputs.update-deps }}
         HELM_REPOSITORY: ${{ inputs.chart-repository }}
-        OCI_REGISTRY: ${{ inputs.chart-repository-type }}
         HELM_WAIT: ${{ inputs.helm-wait }}
         PLUGINS_LIST: ${{ inputs.plugins }}
         HELM_ATOMIC: ${{ inputs.atomic }}
