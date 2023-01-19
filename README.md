@@ -6,6 +6,12 @@ Note:  If your EKS cluster administrative access is in a private network, you wi
 
 ## Customizing
 
+### Note on chart repository / oci registry
+
+Although Helm repositories are different than [OCI registries](https://helm.sh/docs/topics/registries/), the `chart-repository` variable supports both options.
+
+See [example below](https://github.com/bitovi/github-actions-deploy-eks-helm#example-3) for reference, but should be similar to using a repo.
+
 ### Inputs
 
 Following inputs can be used as `step.with` keys
@@ -41,23 +47,24 @@ Following inputs can be used as `step.with` keys
 ## Example usage
 
 ```yaml
-uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
-with:
-  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  aws-region: us-west-2
-  cluster-name: mycluster
-  config-files: .github/values/dev.yaml
-  chart-path: chart/
-  namespace: dev
-  values: key1=value1,key2=value2
-  name: release_name
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        cluster-name: mycluster
+        config-files: .github/values/dev.yaml
+        chart-path: chart/
+        namespace: dev
+        values: key1=value1,key2=value2
+        name: release_name
 ```
 
 ## Example 2
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
+      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -73,18 +80,36 @@ with:
         atomic: true
 ```
 
+## Example 3
+```yaml
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        cluster-name: mycluster
+        cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
+        chart-repository: oci://registry.io/
+        chart-path: organization/chart
+        namespace: org
+        name: some-name
+        version: 0.1.0
+```
+
 ## Example Uninstall
 
 ```yaml
-uses: bitovi/github-actions-deploy-eks-helm@v1.0.4
-with:
-  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  aws-region: us-west-2
-  action: uninstall
-  cluster-name: mycluster
-  namespace: dev
-  name: release_name
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        action: uninstall
+        cluster-name: mycluster
+        namespace: dev
+        name: release_name
 ```
 
 ## Contributing
