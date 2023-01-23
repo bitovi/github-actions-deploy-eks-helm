@@ -44,7 +44,7 @@ Following inputs can be used as `step.with` keys
 | `username`                 | String | Chart repository username where to locate the requested chart.                                                                                              |
 | `password`                 | String | Chart repository password where to locate the requested chart.                                                                                              |
 
-## Example usage
+## Example 1 - local repo chart
 
 ```yaml
     - name: Deploy Helm
@@ -61,7 +61,7 @@ Following inputs can be used as `step.with` keys
         name: release_name
 ```
 
-## Example 2
+## Example 2 - Custom Chart Repo
 ```yaml
     - name: Deploy Helm
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
@@ -80,7 +80,7 @@ Following inputs can be used as `step.with` keys
         atomic: true
 ```
 
-## Example 3
+## Example 3 - OCI Chart Repo
 ```yaml
     - name: Deploy Helm
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
@@ -95,6 +95,22 @@ Following inputs can be used as `step.with` keys
         namespace: org
         name: some-name
         version: 0.1.0
+```
+
+## Example 4 - Separate AWS login
+```
+    - name: Configure AWS credentials     # using OIDC instead of IAM credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::${{ fromJson(secrets.ACCOUNT_IDS)[env.environment] }}:role/github-actions
+        aws-region: ${{ env.aws-region }}
+
+    - name: Install Helm Chart
+      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      with:
+        aws-region: ${{ env.aws-region }}
+        cluster-name: eks-cluster-${{ env.environment }}
+        ... (put your other arguments here)
 ```
 
 ## Example Uninstall
