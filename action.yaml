@@ -64,6 +64,27 @@ inputs:
     atomic:
         description: 'Add the --atomic flag to rollback on failure'
         required: false
+    ca-file:
+        description: 'Verify certificates of HTTPS-enabled servers using this CA bundle.'
+        required: false
+    cert-file:
+        description: 'Identify HTTPS client using this SSL certificate file.'
+        required: false
+    key-file:
+        description: 'Identify HTTPS client using this SSL key file.'
+        required: false
+    insecure-skip-tls-verify:
+        description: 'Skip tls certificate checks for the chart download.'
+        required: false
+    pass-credentials:
+        description: 'Pass credentials to all domains.'
+        required: false
+    password:
+        description: 'Chart repository password where to locate the requested chart.'
+        required: false
+    username:
+        description: 'Chart repository username where to locate the requested chart.'
+        required: false
 
 runs:
     using: 'docker'
@@ -86,4 +107,11 @@ runs:
         PLUGINS_LIST: ${{ inputs.plugins }}
         HELM_ATOMIC: ${{ inputs.atomic }}
         HELM_ACTION: ${{ inputs.action }}
+        CA_FILE: ${{ inputs.ca-file }}
+        CERT_FILE: ${{ inputs.cert-file }}
+        KEY_FILE: ${{ inputs.key-file }}
+        SKIP_TLS: $ {{ inputs.insecure-skip-tls-verify }}
+        PASS_CREDENTIALS: ${{ inputs.pass-credentials }}
+        REPO_USERNAME: ${{ inputs.username }}
+        REPO_PASSWORD: ${{ inputs.password }}
         VERSION: ${{ inputs.version }}
