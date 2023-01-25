@@ -124,7 +124,7 @@ if [ "${HELM_ACTION}" == "install" ]; then
     # Upgrade or install the chart.  This does it all.
     HELM_COMMAND="helm upgrade --install --create-namespace --timeout ${TIMEOUT}  ${HELM_AUTH}"
 
-    # If we should wait, then do so 
+    # If we should wait, then do so
     if [ -n "${HELM_WAIT}" ]; then
         HELM_COMMAND="${HELM_COMMAND} --wait"
     fi
@@ -165,6 +165,12 @@ HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME}"
 if [ "${HELM_ACTION}" == "install" ]; then
     if [ "${OCI_REGISTRY}" == "true" ]; then
         DEPLOY_CHART_PATH="${HELM_REPOSITORY}/${DEPLOY_CHART_PATH}"
+    fi
+    if [ "${UPDATE_DEPS}" == "true" ]; then
+        if ! (cd "${DEPLOY_CHART_PATH}/" && helm dependency update); then
+           echo "::error:: Update HELM dependencies failed"
+           exit 2
+        fi
     fi
     HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_CHART_PATH}"
 fi
