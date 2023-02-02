@@ -159,18 +159,16 @@ if [ -n "$DEPLOY_NAMESPACE" ]; then
     HELM_COMMAND="${HELM_COMMAND} -n ${DEPLOY_NAMESPACE}"
 fi
 
+if [ "${UPDATE_DEPS}" == "true" ]; then
+    HELM_COMMAND="${HELM_COMMAND} --dependency-update"
+fi
+
 # Execute Commands
 HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME}"
 
 if [ "${HELM_ACTION}" == "install" ]; then
     if [ "${OCI_REGISTRY}" == "true" ]; then
         DEPLOY_CHART_PATH="${HELM_REPOSITORY}/${DEPLOY_CHART_PATH}"
-    fi
-    if [ "${UPDATE_DEPS}" == "true" ]; then
-        if ! (cd "${DEPLOY_CHART_PATH}/" && helm dependency update); then
-           echo "::error:: Update HELM dependencies failed"
-           exit 2
-        fi
     fi
     HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_CHART_PATH}"
 fi
