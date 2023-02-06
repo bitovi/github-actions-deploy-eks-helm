@@ -147,6 +147,11 @@ if [ "${HELM_ACTION}" == "install" ]; then
         HELM_COMMAND="${HELM_COMMAND} --version ${VERSION}"
     fi
 
+    if [ "${UPDATE_DEPS}" == "true" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --dependency-update"
+    fi
+
+
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
 
@@ -157,10 +162,6 @@ fi
 
 if [ -n "$DEPLOY_NAMESPACE" ]; then
     HELM_COMMAND="${HELM_COMMAND} -n ${DEPLOY_NAMESPACE}"
-fi
-
-if [ "${UPDATE_DEPS}" == "true" ]; then
-    HELM_COMMAND="${HELM_COMMAND} --dependency-update"
 fi
 
 # Execute Commands
