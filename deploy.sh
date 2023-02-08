@@ -84,7 +84,10 @@ fi
 if [ -n "${HELM_REPOSITORY}" ] && [ "${OCI_REGISTRY}" != "true" ]; then
     HELM_CHART_NAME="${DEPLOY_CHART_PATH%/*}"
 
-    CHART_REPO_EXISTS=$(helm repo list | _grep ^${HELM_CHART_NAME})
+    # Need this to avoid exit if no repo exists
+    HELM_REPOS=$(helm repo list || true)
+    CHART_REPO_EXISTS=$(echo $HELM_REPOS | _grep ^${HELM_CHART_NAME})
+
     if [ -z "${CHART_REPO_EXISTS}" ]; then
         echo "Adding repo ${HELM_CHART_NAME} (${HELM_REPOSITORY})"
         helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY} ${HELM_AUTH}
@@ -124,7 +127,7 @@ if [ "${HELM_ACTION}" == "install" ]; then
     # Upgrade or install the chart.  This does it all.
     HELM_COMMAND="helm upgrade --install --create-namespace --timeout ${TIMEOUT}  ${HELM_AUTH}"
 
-    # If we should wait, then do so 
+    # If we should wait, then do so
     if [ -n "${HELM_WAIT}" ]; then
         HELM_COMMAND="${HELM_COMMAND} --wait"
     fi
@@ -146,6 +149,11 @@ if [ "${HELM_ACTION}" == "install" ]; then
     if [ -n "$VERSION" ]; then
         HELM_COMMAND="${HELM_COMMAND} --version ${VERSION}"
     fi
+
+    if [ "${UPDATE_DEPS}" == "true" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --dependency-update"
+    fi
+
 
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
