@@ -84,7 +84,10 @@ fi
 if [ -n "${HELM_REPOSITORY}" ] && [ "${OCI_REGISTRY}" != "true" ]; then
     HELM_CHART_NAME="${DEPLOY_CHART_PATH%/*}"
 
-    CHART_REPO_EXISTS=$(helm repo list | _grep ^${HELM_CHART_NAME})
+    # Need this to avoid exit if no repo exists
+    HELM_REPOS=$(helm repo list || true)
+    CHART_REPO_EXISTS=$(echo $HELM_REPOS | _grep ^${HELM_CHART_NAME})
+
     if [ -z "${CHART_REPO_EXISTS}" ]; then
         echo "Adding repo ${HELM_CHART_NAME} (${HELM_REPOSITORY})"
         helm repo add ${HELM_CHART_NAME} ${HELM_REPOSITORY} ${HELM_AUTH}
