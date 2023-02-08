@@ -48,7 +48,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -64,7 +64,7 @@ Following inputs can be used as `step.with` keys
 ## Example 2 - Custom Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -83,7 +83,7 @@ Following inputs can be used as `step.with` keys
 ## Example 3 - OCI Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -98,15 +98,15 @@ Following inputs can be used as `step.with` keys
 ```
 
 ## Example 4 - Separate AWS login
-```
-    - name: Configure AWS credentials     # using OIDC instead of IAM credentials
+```yaml
+    - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::${{ fromJson(secrets.ACCOUNT_IDS)[env.environment] }}:role/github-actions
+        role-to-assume: arn:aws:iam::${{ env.aws-account-id }}:role/${{ env.aws-assume-role }}
         aws-region: ${{ env.aws-region }}
 
     - name: Install Helm Chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
       with:
         aws-region: ${{ env.aws-region }}
         cluster-name: eks-cluster-${{ env.environment }}
@@ -117,7 +117,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.1.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
