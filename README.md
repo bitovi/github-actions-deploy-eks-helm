@@ -14,7 +14,7 @@ See [example below](https://github.com/bitovi/github-actions-deploy-eks-helm#exa
 
 ### Note on charts list command
 
-You can use the name as a way to filter results, or just leave it blank to get all the carts available. 
+You can use the name as a way to filter results, or just leave it blank to get all the charts available. 
 
 ### Inputs
 
