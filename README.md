@@ -12,6 +12,10 @@ Although Helm repositories are different than [OCI registries](https://helm.sh/d
 
 See [example below](https://github.com/bitovi/github-actions-deploy-eks-helm#example-3) for reference, but should be similar to using a repo.
 
+### Note on charts list command
+
+You can use the name as a way to filter results, or just leave it blank to get all the carts available. 
+
 ### Inputs
 
 Following inputs can be used as `step.with` keys
@@ -23,7 +27,7 @@ Following inputs can be used as `step.with` keys
 | `aws-region`               | String | AWS region to use. This must match the region your desired cluster lies in.                                                                                 |
 | `cluster-name`             | String | The name of the desired cluster.                                                                                                                            |
 | `cluster-role-arn`         | String | If you wish to assume an admin role, provide the role arn here to login as.                                                                                 |
-| `action`                   | String | Determines if we `install` or `uninstall` the chart. (Optional, Defaults to `install`)                                                                      |
+| `action`                   | String | Determines if we `install`/`uninstall` the chart, or `list`. (Optional, Defaults to `install`)                                                                      |
 | `config-files`             | String | Comma separated list of helm values files.                                                                                                                  |
 | `namespace`                | String | Kubernetes namespace to use.  Will create if it does not exist                                                                                              |
 | `values`                   | String | Comma separated list of value set for helms. e.x:`key1=value1,key2=value2`                                                                                  |
@@ -48,7 +52,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -64,7 +68,7 @@ Following inputs can be used as `step.with` keys
 ## Example 2 - Custom Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -83,7 +87,7 @@ Following inputs can be used as `step.with` keys
 ## Example 3 - OCI Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -106,7 +110,7 @@ Following inputs can be used as `step.with` keys
         aws-region: ${{ env.aws-region }}
 
     - name: Install Helm Chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         aws-region: ${{ env.aws-region }}
         cluster-name: eks-cluster-${{ env.environment }}
@@ -117,13 +121,27 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.2
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
         action: uninstall
         cluster-name: mycluster
+        namespace: dev
+        name: release_name
+```
+
+## Example List
+
+```yaml
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        action: list
         namespace: dev
         name: release_name
 ```

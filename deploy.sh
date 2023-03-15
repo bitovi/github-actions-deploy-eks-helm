@@ -157,14 +157,23 @@ if [ "${HELM_ACTION}" == "install" ]; then
 
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
-
+elif [ "${HELM_ACTION}" == "list "]; then
+    HELM_COMMAND="helm list"
 else
-    echo "::error:: HELM_ACTION specified doesn't exist in this context. Please use 'install' or 'uninstall'"
+    echo "::error:: HELM_ACTION specified doesn't exist in this context. Please use 'install','uninstall' or 'list'"
     exit 2
 fi
 
 if [ -n "$DEPLOY_NAMESPACE" ]; then
     HELM_COMMAND="${HELM_COMMAND} -n ${DEPLOY_NAMESPACE}"
+fi
+
+if [ "${HELM_ACTION}" == "list" ]; then
+     if [ -n "$DEPLOY_NAME" ]; then
+         HELM_COMMAND="${HELM_COMMAND} --filter"
+     else
+         HELM_COMMAND="${HELM_COMMAND} --all"
+     fi
 fi
 
 # Execute Commands
