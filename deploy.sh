@@ -157,7 +157,7 @@ if [ "${HELM_ACTION}" == "install" ]; then
 
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
-elif [ "${HELM_ACTION}" == "list "]; then
+elif [ "${HELM_ACTION}" == "list" ]; then
     HELM_COMMAND="helm list"
 else
     echo "::error:: HELM_ACTION specified doesn't exist in this context. Please use 'install','uninstall' or 'list'"
