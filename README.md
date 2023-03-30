@@ -104,7 +104,7 @@ Following inputs can be used as `step.with` keys
 ## Example 4 - Separate AWS login
 ```yaml
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: arn:aws:iam::${{ env.aws-account-id }}:role/${{ env.aws-assume-role }}
         aws-region: ${{ env.aws-region }}
