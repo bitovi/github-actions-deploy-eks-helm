@@ -37,6 +37,10 @@ inputs:
         description: 'Specify whether you want to install or uninstall the target helm chart'
         required: false
         default: 'install'
+    dry-run:
+        description: 'Toggles dry-run flag for install/uninstall actions'
+        required: false
+        default: false
     chart-path:
         description: 'The path of the chart.'
         required: false
@@ -107,6 +111,7 @@ runs:
         PLUGINS_LIST: ${{ inputs.plugins }}
         HELM_ATOMIC: ${{ inputs.atomic }}
         HELM_ACTION: ${{ inputs.action }}
+        DRY_RUN: ${{ inputs.dry-run }}
         CA_FILE: ${{ inputs.ca-file }}
         CERT_FILE: ${{ inputs.cert-file }}
         KEY_FILE: ${{ inputs.key-file }}
