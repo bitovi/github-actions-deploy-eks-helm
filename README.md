@@ -27,7 +27,8 @@ Following inputs can be used as `step.with` keys
 | `aws-region`               | String | AWS region to use. This must match the region your desired cluster lies in.                                                                                 |
 | `cluster-name`             | String | The name of the desired cluster.                                                                                                                            |
 | `cluster-role-arn`         | String | If you wish to assume an admin role, provide the role arn here to login as.                                                                                 |
-| `action`                   | String | Determines if we `install`/`uninstall` the chart, or `list`. (Optional, Defaults to `install`)                                                                      |
+| `action`                   | String | Determines if we `install`/`uninstall` the chart, or `list`. (Optional, Defaults to `install`)                                                              |
+| `dry-run`                  | Boolean | Toggles `dry-run` option for `install`/`uninstall` action. (Defaults to `false`)                                                                           |
 | `config-files`             | String | Comma separated list of helm values files.                                                                                                                  |
 | `namespace`                | String | Kubernetes namespace to use.  Will create if it does not exist                                                                                              |
 | `values`                   | String | Comma separated list of value set for helms. e.x:`key1=value1,key2=value2`                                                                                  |
@@ -37,7 +38,7 @@ Following inputs can be used as `step.with` keys
 | `version`                  | String | The version of the chart (Optional)                                                                                                                         |
 | `plugins`                  | String | Comma separated list of plugins to install. e.x:` https://github.com/hypnoglow/helm-s3.git, https://github.com/someuser/helm-plugin.git` (defaults to none) |
 | `timeout`                  | String | The value of the timeout for the helm release                                                                                                               |
-| `update-deps`              | String | Update chart dependencies                                                                                                                                   |
+| `update-deps`              | Boolean | Update chart dependencies                                                                                                                                  |
 | `helm-wait`                | String | Add the helm --wait flag to the helm Release (Optional)                                                                                                     |
 | `atomic`                   | String | Add the helm --atomic flag if set (Optional)                                                                                                                |
 | `ca-file`                  | String | Verify certificates of HTTPS-enabled servers using this CA bundle.                                                                                          |
@@ -52,7 +53,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -68,7 +69,7 @@ Following inputs can be used as `step.with` keys
 ## Example 2 - Custom Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -87,7 +88,7 @@ Following inputs can be used as `step.with` keys
 ## Example 3 - OCI Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -110,7 +111,7 @@ Following inputs can be used as `step.with` keys
         aws-region: ${{ env.aws-region }}
 
     - name: Install Helm Chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         aws-region: ${{ env.aws-region }}
         cluster-name: eks-cluster-${{ env.environment }}
@@ -121,7 +122,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -136,7 +137,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

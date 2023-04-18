@@ -154,9 +154,17 @@ if [ "${HELM_ACTION}" == "install" ]; then
         HELM_COMMAND="${HELM_COMMAND} --dependency-update"
     fi
 
+    if [ "${DRY_RUN}" == "true" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --dry-run"
+    fi
 
 elif [ "${HELM_ACTION}" == "uninstall" ]; then
     HELM_COMMAND="helm uninstall --timeout ${TIMEOUT}"
+    
+    if [ "${DRY_RUN}" == "true" ]; then
+        HELM_COMMAND="${HELM_COMMAND} --dry-run"
+    fi
+
 elif [ "${HELM_ACTION}" == "list" ]; then
     HELM_COMMAND="helm list"
 else
