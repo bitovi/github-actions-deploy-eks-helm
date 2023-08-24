@@ -89,7 +89,9 @@ inputs:
     username:
         description: 'Chart repository username where to locate the requested chart.'
         required: false
-
+    use-secrets-vals:
+        description: 'Uses the secrets with vals backend to apply the chart'
+        required: false
 runs:
     using: 'docker'
     image: 'Dockerfile'
@@ -120,3 +122,4 @@ runs:
         REPO_USERNAME: ${{ inputs.username }}
         REPO_PASSWORD: ${{ inputs.password }}
         VERSION: ${{ inputs.version }}
+        USE_SECRETS_VALS: ${{ inputs.use-secrets-vals }}

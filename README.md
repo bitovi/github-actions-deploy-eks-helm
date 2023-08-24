@@ -48,6 +48,7 @@ Following inputs can be used as `step.with` keys
 | `pass-credentials`         | String | Pass credentials to all domains. set (Optional)                                                                                                             |
 | `username`                 | String | Chart repository username where to locate the requested chart.                                                                                              |
 | `password`                 | String | Chart repository password where to locate the requested chart.                                                                                              |
+| `use-secrets-vals`         | Boolean | Use secrets plugin using vals to evaluate the secrets                                                                                                      |
 
 ## Example 1 - local repo chart
 
@@ -116,6 +117,24 @@ Following inputs can be used as `step.with` keys
         aws-region: ${{ env.aws-region }}
         cluster-name: eks-cluster-${{ env.environment }}
         ... (put your other arguments here)
+```
+
+## Example 5 - Use secrets with vals backend
+```yaml
+    - name: Deploy Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        cluster-name: mycluster
+        config-files: .github/values/dev.yaml
+        chart-path: chart/
+        namespace: dev
+        values: key1=value1,key2=value2
+        name: release_name
+        use-secrets-vals: true
+        plugins: https://github.com/jkroepke/helm-secrets
 ```
 
 ## Example Uninstall
