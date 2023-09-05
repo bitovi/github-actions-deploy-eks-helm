@@ -199,5 +199,5 @@ if [ "${HELM_ACTION}" == "install" ]; then
     HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_CHART_PATH}"
 fi
 
-echo "Executing: ${HELM_COMMAND}"
-${HELM_COMMAND}
+echo "Executing: ${HELM_COMMAND} ${EXTRA_ARGS}"
+${HELM_COMMAND} ${EXTRA_ARGS}

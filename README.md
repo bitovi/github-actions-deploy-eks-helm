@@ -49,6 +49,7 @@ Following inputs can be used as `step.with` keys
 | `username`                 | String | Chart repository username where to locate the requested chart.                                                                                              |
 | `password`                 | String | Chart repository password where to locate the requested chart.                                                                                              |
 | `use-secrets-vals`         | Boolean | Use secrets plugin using vals to evaluate the secrets                                                                                                      |
+| `extra-args`               | String | Append any string containing any extra option that might escape the ones present in this action.                                                            |
 
 ## Example 1 - local repo chart
 
