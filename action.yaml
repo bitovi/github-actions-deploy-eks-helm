@@ -92,8 +92,8 @@ inputs:
     use-secrets-vals:
         description: 'Uses the secrets with vals backend to apply the chart'
         required: false
-    extra-args:
-        description: 'AAppend any string containing any extra option that might escape the ones present in this action.'
+    helm-extra-args:
+        description: 'Append any string containing any extra option that might escape the ones present in this action.'
         required: false
 runs:
     using: 'docker'
@@ -126,4 +126,4 @@ runs:
         REPO_PASSWORD: ${{ inputs.password }}
         VERSION: ${{ inputs.version }}
         USE_SECRETS_VALS: ${{ inputs.use-secrets-vals }}
-        EXTRA_ARGS: ${{ inputs.extra-args }}
+        HELM_EXTRA_ARGS: ${{ inputs.extra-args }}
