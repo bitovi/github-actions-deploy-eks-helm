@@ -126,4 +126,4 @@ runs:
         REPO_PASSWORD: ${{ inputs.password }}
         VERSION: ${{ inputs.version }}
         USE_SECRETS_VALS: ${{ inputs.use-secrets-vals }}
-        HELM_EXTRA_ARGS: ${{ inputs.extra-args }}
+        HELM_EXTRA_ARGS: ${{ inputs.helm-extra-args }}
