@@ -10,13 +10,13 @@ OCI_REGISTRY=false
 # Check repository type
 
 if [ -n "${HELM_REPOSITORY}" ]; then
-    if [[ ${HELM_REPOSITORY} =~ ^http.* ]]; then
+    if [[ ${HELM_REPOSITORY} =~ ^http.* ]] || [[ ${HELM_REPOSITORY} =~ ^s3.* ]]; then
         OCI_REGISTRY=false
     else
         if [[ ${HELM_REPOSITORY} =~ ^oci.* ]]; then
             OCI_REGISTRY=true
         else
-            echo "::error::Protocol handler expected here. Need http or oci."
+            echo "::error::Protocol handler expected here. Need http, s3 or oci."
             exit 1
         fi
     fi
