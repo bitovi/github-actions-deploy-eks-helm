@@ -138,6 +138,24 @@ Following inputs can be used as `step.with` keys
         plugins: https://github.com/jkroepke/helm-secrets
 ```
 
+## Example 6 - Use with S3 as repo
+```yaml
+    - name: Deploy S3 Helm chart
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.5
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        chart-repository: s3://my-s3-bucket/
+        chart-path: my-service/my-service
+        version: 0.1.0
+        cluster-name: mycluster
+        namespace: dev
+        name: my_service_name
+        plugins: https://github.com/hypnoglow/helm-s3.git
+```
+* See the [official AWS Guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-a-helm-v3-chart-repository-in-amazon-s3.html) on how to set this up.
+
 ## Example Uninstall
 
 ```yaml
