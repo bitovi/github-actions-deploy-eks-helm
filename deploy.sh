@@ -126,6 +126,7 @@ fi
 if [ "${HELM_ACTION}" == "install" ]; then
 
     if [ -n "${USE_SECRETS_VALS}" ]; then
+      install_vals
       HELM_COMMAND="helm secrets --backend vals --evaluate-templates true upgrade --install --create-namespace --timeout ${TIMEOUT}  ${HELM_AUTH}"
     else
       # Upgrade or install the chart.  This does it all.
@@ -201,3 +202,12 @@ fi
 
 echo "Executing: ${HELM_COMMAND} ${HELM_EXTRA_ARGS}"
 ${HELM_COMMAND} ${HELM_EXTRA_ARGS}
+
+install_vals () {
+    echo "Installing vals..."
+    wget https://github.com/helmfile/vals/releases/download/v0.28.1/vals_0.28.1_linux_amd64.tar.gz
+    tar -xvf vals_0.28.1_linux_amd64.tar.gz
+    sudo mv vals /usr/local/bin
+    rm vals_0.28.1_linux_amd64.tar.gz
+    echo "Installed vals"
+}
