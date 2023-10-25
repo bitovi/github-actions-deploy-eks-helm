@@ -7,6 +7,16 @@ _grep() { grep "$@" || test $? = 1; }
 HELM_AUTH=""
 OCI_REGISTRY=false
 
+# Installs vals tool
+install_vals () {
+    echo "Installing vals..."
+    wget https://github.com/helmfile/vals/releases/download/v0.28.1/vals_0.28.1_linux_amd64.tar.gz
+    tar -xvf vals_0.28.1_linux_amd64.tar.gz
+    sudo mv vals /usr/local/bin
+    rm vals_0.28.1_linux_amd64.tar.gz
+    echo "Installed vals"
+}
+
 # Check repository type
 
 if [ -n "${HELM_REPOSITORY}" ]; then
@@ -202,12 +212,3 @@ fi
 
 echo "Executing: ${HELM_COMMAND} ${HELM_EXTRA_ARGS}"
 ${HELM_COMMAND} ${HELM_EXTRA_ARGS}
-
-install_vals () {
-    echo "Installing vals..."
-    wget https://github.com/helmfile/vals/releases/download/v0.28.1/vals_0.28.1_linux_amd64.tar.gz
-    tar -xvf vals_0.28.1_linux_amd64.tar.gz
-    sudo mv vals /usr/local/bin
-    rm vals_0.28.1_linux_amd64.tar.gz
-    echo "Installed vals"
-}
