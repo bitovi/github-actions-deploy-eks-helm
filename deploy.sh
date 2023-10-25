@@ -12,7 +12,7 @@ install_vals () {
     echo "Installing vals..."
     wget https://github.com/helmfile/vals/releases/download/v0.28.1/vals_0.28.1_linux_amd64.tar.gz
     tar -xvf vals_0.28.1_linux_amd64.tar.gz
-    sudo mv vals /usr/local/bin
+    mv vals /usr/local/bin
     rm vals_0.28.1_linux_amd64.tar.gz
     echo "Installed vals"
 }
