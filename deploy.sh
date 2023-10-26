@@ -7,13 +7,15 @@ _grep() { grep "$@" || test $? = 1; }
 HELM_AUTH=""
 OCI_REGISTRY=false
 
-# Installs vals tool
+# Installs vals by downloading the latest release from the helmfile/vals GitHub repository
+# and moving the binary to /usr/local/bin.
 install_vals () {
     echo "Installing vals..."
-    wget https://github.com/helmfile/vals/releases/download/v0.28.1/vals_0.28.1_linux_amd64.tar.gz
-    tar -xvf vals_0.28.1_linux_amd64.tar.gz
+    export latest_release=$(curl --silent "https://api.github.com/repos/helmfile/vals/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+    wget "https://github.com/helmfile/vals/releases/download/v${latest_release}/vals_${latest_release}_linux_amd64.tar.gz"
+    tar -xvf vals_${latest_release}_linux_amd64.tar.gz
     mv vals /usr/local/bin
-    rm vals_0.28.1_linux_amd64.tar.gz
+    rm vals_${latest_release}_linux_amd64.tar.gz
     echo "Installed vals"
 }
 
