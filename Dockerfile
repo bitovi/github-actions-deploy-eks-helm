@@ -1,4 +1,4 @@
-FROM alpine/k8s:1.26.9
+FROM alpine/k8s:1.26.10
     
 COPY deploy.sh /usr/local/bin/deploy
 
