@@ -210,7 +210,7 @@ We would love for you to contribute to [`bitovi/github-actions-deploy-eks-helm`]
 ## License
 The scripts and documentation in this project are released under the [MIT License](https://github.com/bitovi/github-actions-deploy-eks-helm/blob/main/LICENSE).
 
-## Provided by Bitovi 🔴⚪
+## Provided by Bitovi
 [Bitovi](https://www.bitovi.com/) is a proud supporter of Open Source software.
 
 ## Need help or have questions?
