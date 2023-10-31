@@ -5,7 +5,7 @@
 ## Action Summary
 This action deploys Helm charts to an EKS cluster, allowing ECR/OCI repos as sources, and handling plugin installation, using [this awesome Docker image](https://github.com/alpine-docker/k8s) as base.
 
-| Note: If your EKS cluster administrative access is in a private network, you will need to use a self hosted runner in that network to use this action.
+> **Note:** If your EKS cluster administrative access is in a private network, you will need to use a self hosted runner in that network to use this action.
 
 If you would like to deploy a backend app/service, check out our other actions:
 | Action | Purpose |
