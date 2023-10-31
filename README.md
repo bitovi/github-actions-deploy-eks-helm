@@ -3,7 +3,7 @@
 `bitovi/github-actions-deploy-eks-helm` deploys helm charts to an EKS Cluster.
 
 ## Action Summary
-This action deploys Helm charts to an EKS cluster, allowing ECR/OCI repos as sources, and handling plugin installation, using [this awesome Docker image](https://github.com/alpine-docker/k8s) as base.
+This action deploys Helm charts to an EKS cluster, allowing ECR/OCI as sources, and handling plugin installation, using [this awesome Docker image](https://github.com/alpine-docker/k8s) as base.
 
 > **Note:** If your EKS cluster administrative access is in a private network, you will need to use a self hosted runner in that network to use this action.
 
@@ -27,9 +27,7 @@ You can **get help or ask questions** on our:
 
 ## Customizing
 
-### Note on chart repository / oci registry
-
-Although Helm repositories are different than [OCI registries](https://helm.sh/docs/topics/registries/), the `chart-repository` variable supports both options.
+> **Note:** Although Helm repositories are different than [OCI registries](https://helm.sh/docs/topics/registries/), the `chart-repository` variable supports both options.
 
 See [example below](https://github.com/bitovi/github-actions-deploy-eks-helm#example-3) for reference, but should be similar to using a repo.
 
@@ -212,7 +210,7 @@ We would love for you to contribute to [`bitovi/github-actions-deploy-eks-helm`]
 ## License
 The scripts and documentation in this project are released under the [MIT License](https://github.com/bitovi/github-actions-deploy-eks-helm/blob/main/LICENSE).
 
-## Provided by Bitovi
+## Provided by Bitovi 🔴 ⚪
 [Bitovi](https://www.bitovi.com/) is a proud supporter of Open Source software.
 
 ## Need help or have questions?
