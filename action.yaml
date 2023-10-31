@@ -1,6 +1,6 @@
 # action.yml
-name: 'Deploy Helm to EKS'
-description: 'Deploy a helm chart to an EKS cluster using IAM authentication.'
+name: 'Deploy Helm chart to AWS EKS Cluster'
+description: 'Deploy a helm chart to an Amazon EKS cluster using IAM authentication.'
 branding:
     icon: anchor
     color: red
@@ -120,7 +120,7 @@ runs:
         CA_FILE: ${{ inputs.ca-file }}
         CERT_FILE: ${{ inputs.cert-file }}
         KEY_FILE: ${{ inputs.key-file }}
-        SKIP_TLS: $ {{ inputs.insecure-skip-tls-verify }}
+        SKIP_TLS: ${{ inputs.insecure-skip-tls-verify }}
         PASS_CREDENTIALS: ${{ inputs.pass-credentials }}
         REPO_USERNAME: ${{ inputs.username }}
         REPO_PASSWORD: ${{ inputs.password }}

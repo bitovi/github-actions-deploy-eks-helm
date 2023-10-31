@@ -1,14 +1,33 @@
-# EKS deployments with Helm
+# Deploy Helm charts to AWS EKS cluster
 
-GitHub action for deploying to AWS EKS clusters using helm.
+`bitovi/github-actions-deploy-eks-helm` deploys helm charts to an EKS Cluster.
 
-Note:  If your EKS cluster administrative access is in a private network, you will need to use a self hosted runner in that network to use this action.
+## Action Summary
+This action deploys Helm charts to an EKS cluster, allowing ECR/OCI as sources, and handling plugin installation, using [this awesome Docker image](https://github.com/alpine-docker/k8s) as base.
+
+> **Note:** If your EKS cluster administrative access is in a private network, you will need to use a self hosted runner in that network to use this action.
+
+If you would like to deploy a backend app/service, check out our other actions:
+| Action | Purpose |
+| ------ | ------- |
+| [Deploy Docker to EC2](https://github.com/marketplace/actions/deploy-docker-to-aws-ec2) | Deploys a repo with a Dockerized application to a virtual machine (EC2) on AWS |
+| [Deploy React to GitHub Pages](https://github.com/marketplace/actions/deploy-react-to-github-pages) | Builds and deploys a React application to GitHub Pages. |
+| [Deploy static site to AWS (S3/CDN/R53)](https://github.com/marketplace/actions/deploy-static-site-to-aws-s3-cdn-r53) | Hosts a static site in AWS S3 with CloudFront |
+<br/>
+
+**And more!**, check our [list of actions in the GitHub marketplace](https://github.com/marketplace?category=&type=actions&verification=&query=bitovi)
+
+# Need help or have questions?
+This project is supported by [Bitovi, A DevOps consultancy](https://www.bitovi.com/services/devops-consulting).
+
+You can **get help or ask questions** on our:
+
+- [Discord Community](https://discord.gg/J7ejFsZnJ4Z)
+
 
 ## Customizing
 
-### Note on chart repository / oci registry
-
-Although Helm repositories are different than [OCI registries](https://helm.sh/docs/topics/registries/), the `chart-repository` variable supports both options.
+> **Note:** Although Helm repositories are different than [OCI registries](https://helm.sh/docs/topics/registries/), the `chart-repository` variable supports both options.
 
 See [example below](https://github.com/bitovi/github-actions-deploy-eks-helm#example-3) for reference, but should be similar to using a repo.
 
@@ -55,7 +74,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -71,7 +90,7 @@ Following inputs can be used as `step.with` keys
 ## Example 2 - Custom Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -90,7 +109,7 @@ Following inputs can be used as `step.with` keys
 ## Example 3 - OCI Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -113,7 +132,7 @@ Following inputs can be used as `step.with` keys
         aws-region: ${{ env.aws-region }}
 
     - name: Install Helm Chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-region: ${{ env.aws-region }}
         cluster-name: eks-cluster-${{ env.environment }}
@@ -123,7 +142,7 @@ Following inputs can be used as `step.with` keys
 ## Example 5 - Use secrets with vals backend
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -141,7 +160,7 @@ Following inputs can be used as `step.with` keys
 ## Example 6 - Use with S3 as repo
 ```yaml
     - name: Deploy S3 Helm chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -160,7 +179,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -175,7 +194,7 @@ Following inputs can be used as `step.with` keys
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.7
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.8
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
