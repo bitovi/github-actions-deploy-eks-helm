@@ -1,7 +1,7 @@
 # Deploy Helm charts to AWS EKS cluster
 
 `bitovi/github-actions-deploy-eks-helm` deploys helm charts to an EKS Cluster.
-
+![alt](https://bitovi-gha-pixel-tracker-deployment-main.bitovi-sandbox.com/pixel/LW06qgz37wS0e62G4UHYS)
 ## Action Summary
 This action deploys Helm charts to an EKS cluster, allowing ECR/OCI as sources, and handling plugin installation, using [this awesome Docker image](https://github.com/alpine-docker/k8s) as base.
 
