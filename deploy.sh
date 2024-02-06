@@ -194,7 +194,11 @@ HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_NAME}"
 
 if [ "${HELM_ACTION}" == "install" ]; then
     if [ "${OCI_REGISTRY}" == "true" ]; then
-        DEPLOY_CHART_PATH="${HELM_REPOSITORY}/${DEPLOY_CHART_PATH}"
+        if [ -n "${DEPLOY_CHART_PATH}" ]; then
+            DEPLOY_CHART_PATH="${HELM_REPOSITORY}/${DEPLOY_CHART_PATH}"
+        else
+            DEPLOY_CHART_PATH="${HELM_REPOSITORY}"
+        fi
     fi
     HELM_COMMAND="${HELM_COMMAND} ${DEPLOY_CHART_PATH}"
 fi
