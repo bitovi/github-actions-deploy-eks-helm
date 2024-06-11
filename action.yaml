@@ -25,8 +25,12 @@ inputs:
         description: 'Comma separated list of helm values files.'
         required: false
     namespace:
-        description: 'Kubernetes namespace to use.'
+        description: 'Kubernetes namespace to target. (default: "default")'
         required: false
+    create-namespace:
+        description: 'Enable creating the namespace if it does not exist. Requires cluster API permissions.'
+        required: false
+        default: "true"
     values:
         description: 'Comma separated list of value sets for helms. e.x: key1=value1,key2=value2'
         required: false
@@ -106,6 +110,7 @@ runs:
         CLUSTER_ROLE_ARN: ${{ inputs.cluster-role-arn }}
         DEPLOY_CONFIG_FILES: ${{ inputs.config-files }}
         DEPLOY_NAMESPACE: ${{ inputs.namespace }}
+        CREATE_NAMESPACE: ${{ inputs.create-namespace }}
         DEPLOY_VALUES: ${{ inputs.values }}
         DEPLOY_NAME: ${{ inputs.name }}
         DEPLOY_CHART_PATH: ${{ inputs.chart-path }}
