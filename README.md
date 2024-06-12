@@ -49,7 +49,8 @@ Following inputs can be used as `step.with` keys
 | `action`                   | String | Determines if we `install`/`uninstall` the chart, or `list`. (Optional, Defaults to `install`)                                                              |
 | `dry-run`                  | Boolean | Toggles `dry-run` option for `install`/`uninstall` action. (Defaults to `false`)                                                                           |
 | `config-files`             | String | Comma separated list of helm values files.                                                                                                                  |
-| `namespace`                | String | Kubernetes namespace to use.  Will create if it does not exist                                                                                              |
+| `namespace`                | String | Kubernetes namespace to use.  To create the namespace if it doesn't exist, also set `create-namespace` to `true`.    |
+| `create-namespace`         | Boolean | Adds `--create-namespace` when set to `true`. Requires cluster API permissions. (Default: `true`)                   |
 | `values`                   | String | Comma separated list of value set for helms. e.x:`key1=value1,key2=value2`                                                                                  |
 | `name`                     | String | The name of the helm release                                                                                                                                |
 | `chart-path`               | String | The path to the chart. (defaults to `helm/`)                                                                                                                |
@@ -100,6 +101,7 @@ Following inputs can be used as `step.with` keys
         config-files: fluent-bit/prod/values.yaml
         chart-path: fluent/fluent-bit
         namespace: logging
+        create-namespace: true
         name: fluent-bit
         chart-repository: https://fluent.github.io/helm-charts
         version: 0.20.6
