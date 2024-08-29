@@ -15,21 +15,19 @@ If you would like to deploy a backend app/service, check out our other actions:
 | [Deploy static site to AWS (S3/CDN/R53)](https://github.com/marketplace/actions/deploy-static-site-to-aws-s3-cdn-r53) | Hosts a static site in AWS S3 with CloudFront |
 <br/>
 
-**And more!**, check our [list of actions in the GitHub marketplace](https://github.com/marketplace?category=&type=actions&verification=&query=bitovi)
+**And more!** Check our [list of actions in the GitHub marketplace](https://github.com/marketplace?category=&type=actions&verification=&query=bitovi).
 
 # Need help or have questions?
 This project is supported by [Bitovi, A DevOps consultancy](https://www.bitovi.com/services/devops-consulting).
 
-You can **get help or ask questions** on our:
-
-- [Discord Community](https://discord.gg/zAHn4JBVcX)
+You can **get help or ask questions** on our [Discord Community](https://discord.gg/zAHn4JBVcX).
 
 
 ## Customizing
 
 > **Note:** Although Helm repositories are different than [OCI registries](https://helm.sh/docs/topics/registries/), the `chart-repository` variable supports both options.
 
-See [example below](https://github.com/bitovi/github-actions-deploy-eks-helm#example-3) for reference, but should be similar to using a repo.
+See [example below](https://github.com/bitovi/github-actions-deploy-eks-helm#example-3) for reference, but the process should be similar to using a repo.
 
 ### Note on charts list command
 
@@ -37,27 +35,27 @@ You can use the name as a way to filter results, or just leave it blank to get a
 
 ### Inputs
 
-Following inputs can be used as `step.with` keys
+The following inputs are available as `step.with` keys:
 
 | Name                       | Type   | Description                                                                                                                                                 |
 | -------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `aws-secret-access-key`    | String | AWS secret access key part of the aws credentials. This is used to login to EKS.                                                                            |
 | `aws-access-key-id`        | String | AWS access key id part of the aws credentials. This is used to login to EKS.                                                                                |
-| `aws-region`               | String | AWS region to use. This must match the region your desired cluster lies in.                                                                                 |
+| `aws-region`               | String | AWS region to use. This must match the region your desired cluster is in.                                                                                   |
 | `cluster-name`             | String | The name of the desired cluster.                                                                                                                            |
-| `cluster-role-arn`         | String | If you wish to assume an admin role, provide the role arn here to login as.                                                                                 |
+| `cluster-role-arn`         | String | If you wish to assume an admin role, provide the role arn here to log in as.                                                                                |
 | `action`                   | String | Determines if we `install`/`uninstall` the chart, or `list`. (Optional, Defaults to `install`)                                                              |
 | `dry-run`                  | Boolean | Toggles `dry-run` option for `install`/`uninstall` action. (Defaults to `false`)                                                                           |
 | `config-files`             | String | Comma separated list of helm values files.                                                                                                                  |
 | `namespace`                | String | Kubernetes namespace to use.  To create the namespace if it doesn't exist, also set `create-namespace` to `true`.    |
 | `create-namespace`         | Boolean | Adds `--create-namespace` when set to `true`. Requires cluster API permissions. (Default: `true`)                   |
-| `values`                   | String | Comma separated list of value set for helms. e.x:`key1=value1,key2=value2`                                                                                  |
-| `name`                     | String | The name of the helm release                                                                                                                                |
+| `values`                   | String | Comma separated list of value set for helms. e.x: `key1=value1, key2=value2`                                                                                |
+| `name`                     | String | The name of the helm release.                                                                                                                               |
 | `chart-path`               | String | The path to the chart. (defaults to `helm/`)                                                                                                                |
 | `chart-repository`         | String | The URL of the chart-repository (Optional) Note: If oci based registry, set url to oci://                                                                   |
 | `version`                  | String | The version of the chart (Optional)                                                                                                                         |
 | `plugins`                  | String | Comma separated list of plugins to install. e.x:` https://github.com/hypnoglow/helm-s3.git, https://github.com/someuser/helm-plugin.git` (defaults to none) |
-| `timeout`                  | String | The value of the timeout for the helm release                                                                                                               |
+| `timeout`                  | String | The value of the timeout for the helm release.                                                                                                              |
 | `update-deps`              | Boolean | Update chart dependencies                                                                                                                                  |
 | `helm-wait`                | String | Add the helm --wait flag to the helm Release (Optional)                                                                                                     |
 | `atomic`                   | String | Add the helm --atomic flag if set (Optional)                                                                                                                |
@@ -177,7 +175,7 @@ Following inputs can be used as `step.with` keys
 ```
 * See the [official AWS Guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-a-helm-v3-chart-repository-in-amazon-s3.html) on how to set this up.
 
-## Example 7 - Using a different role in action vs the role the cluster was built with
+## Example 7 - Use a different role in the Action than the role the cluster was built with
 
 **action.yaml**
 ```yaml
@@ -222,8 +220,8 @@ Following inputs can be used as `step.with` keys
     ... (surrounding code)
 ```
 
-> NOTE: If you see an error like `Not Authorized` or `Kubernetes cluster unreachable: the server has asked for the client to provide credentials`, this could be due to the fact that this action is using a different role vs the role that the EKS cluster was built with. The previous method to fix, was to add an entry to the `aws-auth` ConfigMap in the kube-system namespace, however, AWS is now using [Access Entries](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) and that would need to be adjusted in order to give the action role access to the EKS cluster.  
-> You may be able to use to some [AssumedRole](https://github.com/aws-actions/configure-aws-credentials?tab=readme-ov-file#assumerole-with-role-previously-assumed-by-action-in-same-workflow) method where you chain the roles together in the AWS authentication instead.
+> NOTE: If you see an error like `Not Authorized` or `Kubernetes cluster unreachable: the server has asked for the client to provide credentials`, it could be due to this Action using a different role than the EKS cluster was built with. The previous fix was to add an entry to the `aws-auth` ConfigMap in the `kube-system` namespace; however, AWS is now using [Access Entries](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) whic might need to be adjusted to give the Action Role access to the EKS cluster.  
+> You may be able to use to an [AssumedRole](https://github.com/aws-actions/configure-aws-credentials?tab=readme-ov-file#assumerole-with-role-previously-assumed-by-action-in-same-workflow) method where you chain the roles together in the AWS authentication instead.
 
 ## Example Uninstall
 
@@ -264,6 +262,6 @@ The scripts and documentation in this project are released under the [MIT Licens
 [Bitovi](https://www.bitovi.com/) is a proud supporter of Open Source software.
 
 ## Need help or have questions?
-You can **get help or ask questions** on [Discord channel](https://discord.gg/zAHn4JBVcX)! Come hangout with us!
+You can **get help or ask questions** on [Discord channel](https://discord.gg/zAHn4JBVcX)! Come hang out with us!
 
 Or, you can hire us for training, consulting, or development. [Set up a free consultation](https://www.bitovi.com/devops-consulting).
