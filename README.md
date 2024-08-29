@@ -220,7 +220,7 @@ The following inputs are available as `step.with` keys:
     ... (surrounding code)
 ```
 
-> NOTE: If you see an error like `Not Authorized` or `Kubernetes cluster unreachable: the server has asked for the client to provide credentials`, it could be due to this Action using a different role than the EKS cluster was built with. The previous fix was to add an entry to the `aws-auth` ConfigMap in the `kube-system` namespace; however, AWS is now using [Access Entries](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) whic might need to be adjusted to give the Action Role access to the EKS cluster.  
+> NOTE: If you see an error like `Not Authorized` or `Kubernetes cluster unreachable: the server has asked for the client to provide credentials`, it could be due to this Action using a different role than the EKS cluster was built with. The previous fix was to add an entry to the `aws-auth` ConfigMap in the `kube-system` namespace; however, AWS is now using [Access Entries](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) which might need to be adjusted to give the Action Role access to the EKS cluster.  
 > You may be able to use to an [AssumedRole](https://github.com/aws-actions/configure-aws-credentials?tab=readme-ov-file#assumerole-with-role-previously-assumed-by-action-in-same-workflow) method where you chain the roles together in the AWS authentication instead.
 
 ## Example Uninstall
