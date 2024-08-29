@@ -69,7 +69,7 @@ Following inputs can be used as `step.with` keys
 | `username`                 | String | Chart repository username where to locate the requested chart.                                                                                              |
 | `password`                 | String | Chart repository password where to locate the requested chart.                                                                                              |
 | `use-secrets-vals`         | Boolean | Use secrets plugin using vals to evaluate the secrets                                                                                                      |
-| `helm-extra-args`          | String | Append any string containing any extra option that might escape the ones present in this action.                                                            |
+| `helm-extra-args`          | String | Append any string containing any extra option that might escape the ones present in this action.                                       
 
 ## Example 1 - local repo chart
 
@@ -176,6 +176,54 @@ Following inputs can be used as `step.with` keys
         plugins: https://github.com/hypnoglow/helm-s3.git
 ```
 * See the [official AWS Guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-a-helm-v3-chart-repository-in-amazon-s3.html) on how to set this up.
+
+## Example 7 - Using a different role in action vs the role the cluster was built with
+
+**action.yaml**
+```yaml
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::${{ env.aws-account-id }}:role/${{ env.aws-assume-role }}
+        aws-region: ${{ env.aws-region }}
+    - name: Install Helm Chart
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      with:
+        aws-region: ${{ env.aws-region }}
+        cluster-name: eks-cluster-${{ env.environment }}
+        ... (put your other arguments here)
+```
+
+**terraform.tf**
+```yaml
+    ... (surrounding code)
+
+    module "eks" {
+      source  = "terraform-aws-modules/eks/aws"
+      version = "~> 20.11.1"
+
+    ... (surrounding code)
+
+        access_entries = {
+            kubernetes_groups = []
+            principal_arn     = var.aws-assume-role.role_arn
+        
+            policy_associations = {
+              access_entry_policy = {
+                policy_arn = var.aws-assume-role.aws_policy_arn
+                access_scope = {
+                  type       = "cluster"
+                }
+              }
+            }
+        }
+    }
+
+    ... (surrounding code)
+```
+
+> NOTE: If you see an error like `Not Authorized` or `Kubernetes cluster unreachable: the server has asked for the client to provide credentials`, this could be due to the fact that this action is using a different role vs the role that the EKS cluster was built with. The previous method to fix, was to add an entry to the `aws-auth` ConfigMap in the kube-system namespace, however, AWS is now using [Access Entries](https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html) and that would need to be adjusted in order to give the action role access to the EKS cluster.  
+> You may be able to use to some [AssumedRole](https://github.com/aws-actions/configure-aws-credentials?tab=readme-ov-file#assumerole-with-role-previously-assumed-by-action-in-same-workflow) method where you chain the roles together in the AWS authentication instead.
 
 ## Example Uninstall
 
