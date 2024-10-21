@@ -148,7 +148,10 @@ if [ "${HELM_ACTION}" == "install" ]; then
     done
 
     if [ -n "$DEPLOY_VALUES" ]; then
-        HELM_COMMAND="${HELM_COMMAND} --set ${DEPLOY_VALUES}"
+        for value in ${DEPLOY_VALUES//,/ }
+        do
+            HELM_COMMAND="${HELM_COMMAND} --set ${value}"
+        done
     fi
 
     if [ -n "$VERSION" ]; then
