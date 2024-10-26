@@ -150,6 +150,16 @@ if [ "${HELM_ACTION}" == "install" ]; then
     if [ -n "$DEPLOY_VALUES" ]; then
         for value in ${DEPLOY_VALUES//,/ }
         do
+            if [[ -z "$value" ]]; then
+                echo "Warning: Empty value detected, skipping."
+                continue
+            elif [[ "$value" != *"="* ]]; then
+                echo "Warning: Value '$value' does not contain an '=' sign, skipping."
+                continue
+            elif [[ "$value" =~ [[:space:]] ]]; then
+                echo "Warning: Value '$value' contains whitespace, skipping."
+                continue
+            fi
             HELM_COMMAND="${HELM_COMMAND} --set ${value}"
         done
     fi

@@ -192,6 +192,33 @@ The following inputs are available as `step.with` keys:
         ... (put your other arguments here)
 ```
 
+## Example 8 - Use a different role in the Action than the role the cluster was built with
+
+**action.yaml**
+```yaml
+    - name: Install Karpenter
+      uses: bitovi/github-actions-deploy-eks-helm
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+        cluster-name: ${{ vars.CLUSTER_NAME }}
+        cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
+        chart-repository: oci://public.ecr.aws
+        chart-path: karpenter/karpenter
+        helm-wait: true
+        namespace: karpenter
+        name: karpenter
+        values: |
+          settings.clusterName=${{ vars.CLUSTER_NAME }},
+          settings.interruptionQueue=${{ vars.CLUSTER_NAME }}-karpenter,
+          controller.resources.requests.cpu=1,
+          controller.resources.requests.memory=1Gi,
+          controller.resources.limits.cpu=1,
+          controller.resources.limits.memory=1Gi
+        version: 1.0.6
+```
+
 **terraform.tf**
 ```yaml
     ... (surrounding code)
