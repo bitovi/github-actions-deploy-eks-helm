@@ -73,7 +73,7 @@ The following inputs are available as `step.with` keys:
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -89,7 +89,7 @@ The following inputs are available as `step.with` keys:
 ## Example 2 - Custom Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -109,7 +109,7 @@ The following inputs are available as `step.with` keys:
 ## Example 3 - OCI Chart Repo
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -132,7 +132,7 @@ The following inputs are available as `step.with` keys:
         aws-region: ${{ env.aws-region }}
 
     - name: Install Helm Chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-region: ${{ env.aws-region }}
         cluster-name: eks-cluster-${{ env.environment }}
@@ -142,7 +142,7 @@ The following inputs are available as `step.with` keys:
 ## Example 5 - Use secrets with vals backend
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -157,47 +157,11 @@ The following inputs are available as `step.with` keys:
         plugins: https://github.com/jkroepke/helm-secrets
 ```
 
-## Example 6 - Use with S3 as repo
-```yaml
-    - name: Deploy S3 Helm chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2
-        chart-repository: s3://my-s3-bucket/
-        chart-path: my-service/my-service
-        version: 0.1.0
-        cluster-name: mycluster
-        namespace: dev
-        name: my_service_name
-        plugins: https://github.com/hypnoglow/helm-s3.git
-```
-* See the [official AWS Guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-a-helm-v3-chart-repository-in-amazon-s3.html) on how to set this up.
+## Example 6 - Define multiple values
 
-## Example 7 - Use a different role in the Action than the role the cluster was built with
-
-**action.yaml**
-```yaml
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: arn:aws:iam::${{ env.aws-account-id }}:role/${{ env.aws-assume-role }}
-        aws-region: ${{ env.aws-region }}
-    - name: Install Helm Chart
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
-      with:
-        aws-region: ${{ env.aws-region }}
-        cluster-name: eks-cluster-${{ env.environment }}
-        ... (put your other arguments here)
-```
-
-## Example 8 - Use a different role in the Action than the role the cluster was built with
-
-**action.yaml**
 ```yaml
     - name: Install Karpenter
-      uses: bitovi/github-actions-deploy-eks-helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -217,6 +181,41 @@ The following inputs are available as `step.with` keys:
           controller.resources.limits.cpu=1,
           controller.resources.limits.memory=1Gi
         version: 1.0.6
+```
+
+## Example 7 - Use with S3 as repo
+```yaml
+    - name: Deploy S3 Helm chart
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        chart-repository: s3://my-s3-bucket/
+        chart-path: my-service/my-service
+        version: 0.1.0
+        cluster-name: mycluster
+        namespace: dev
+        name: my_service_name
+        plugins: https://github.com/hypnoglow/helm-s3.git
+```
+* See the [official AWS Guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-a-helm-v3-chart-repository-in-amazon-s3.html) on how to set this up.
+
+## Example 8 - Use a different role in the Action than the role the cluster was built with
+
+**action.yaml**
+```yaml
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::${{ env.aws-account-id }}:role/${{ env.aws-assume-role }}
+        aws-region: ${{ env.aws-region }}
+    - name: Install Helm Chart
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
+      with:
+        aws-region: ${{ env.aws-region }}
+        cluster-name: eks-cluster-${{ env.environment }}
+        ... (put your other arguments here)
 ```
 
 **terraform.tf**
@@ -254,7 +253,7 @@ The following inputs are available as `step.with` keys:
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -269,7 +268,7 @@ The following inputs are available as `step.with` keys:
 
 ```yaml
     - name: Deploy Helm
-      uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.11
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
