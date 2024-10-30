@@ -38,7 +38,7 @@ inputs:
         description: 'Name of the helm deploy.'
         required: true
     action:
-        description: 'Specify whether you want to install or uninstall the target helm chart'
+        description: 'Specify whether you want to list, install or uninstall the target helm chart'
         required: false
         default: 'install'
     dry-run:
