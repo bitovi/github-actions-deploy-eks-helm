@@ -195,8 +195,8 @@ if [ -n "$DEPLOY_NAMESPACE" ]; then
 fi
 
 # Create namespace if it doesn't exist. Requires cluster API permissions.
-# Will conflict with `list`, so don't set if in list mode
-if [ "${CREATE_NAMESPACE}" == "true" ] && [ "${HELM_ACTION}" != "list" ]; then
+# Only applies to `install` option. `helm upgrade` is not used.
+if [ "${CREATE_NAMESPACE}" == "true" ] && [ "${HELM_ACTION}" == "install" ]; then
     HELM_COMMAND="${HELM_COMMAND} --create-namespace"
 fi
 
